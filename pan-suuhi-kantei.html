@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF3E2">
+<title>ぱんうらない | Mo.33 ぱん数秘鑑定</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E2;
+    --kinari:#FFFAEE;
+    --paper:#FFF4DA;
+    --gold:#E8B93E;
+    --gold-deep:#C99A25;
+    --navy:#1E2A63;
+    --aka:#C6362F;
+    --cha:#4A2F1F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Zen Maru Gothic',-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    background-color:var(--cream);
+    background-image:radial-gradient(rgba(201,154,37,.14) 1.5px, transparent 1.6px);
+    background-size:22px 22px;
+    color:var(--cha);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 80px}
+
+  /* ---- hero ---- */
+  .hero{text-align:center;padding:38px 0 24px;}
+  .heroCoin{width:92px;height:92px;margin:0 auto 10px;display:block;}
+  .brand{
+    font-size:12px;letter-spacing:.35em;
+    color:var(--aka);font-weight:700;padding-left:.35em;
+  }
+  .mark{
+    font-family:'Dela Gothic One',sans-serif;
+    font-size:40px;line-height:1.25;
+    color:var(--navy);margin:6px 0 4px;letter-spacing:.04em;
+  }
+  .mark .aka{color:var(--aka);}
+  .sub{font-size:13.5px;color:var(--cha);letter-spacing:.08em;}
+  .rule{
+    width:64px;height:3px;margin:18px auto 0;border-radius:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+
+  /* ---- inputs ---- */
+  .card{
+    background:var(--kinari);
+    border:3px solid var(--aka);
+    border-radius:18px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);
+    padding:22px 20px;
+    margin-top:16px;
+  }
+  .eyebrow{
+    font-family:'Dela Gothic One',sans-serif;
+    font-size:12px;letter-spacing:.2em;
+    color:var(--aka);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow span{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;color:var(--navy);}
+  .field{margin-bottom:6px;}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--cha);margin-bottom:6px;}
+  input{
+    width:100%;
+    font-family:inherit;font-size:17px;font-weight:700;
+    color:var(--navy);
+    background:#fff;
+    border:2px solid var(--gold-deep);
+    border-radius:12px;
+    padding:11px 12px;
+  }
+  input::placeholder{color:#C9B896;font-weight:500;}
+  input:focus-visible{outline:3px solid var(--navy);outline-offset:2px;}
+  .dob{display:flex;align-items:flex-end;gap:8px;}
+  .dob .u{flex:1;}
+  .dob .u label{text-align:center;}
+  .dob input{text-align:center;}
+  .dob .g{padding-bottom:12px;color:var(--gold-deep);font-weight:700;}
+  .note{font-size:11.5px;color:#8a6f4f;margin-top:8px;line-height:1.7;}
+
+  /* ---- sections ---- */
+  .sect-h{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Dela Gothic One',sans-serif;
+    font-size:17px;color:var(--navy);letter-spacing:.05em;
+    margin:34px 4px 14px;
+  }
+  .sect-h::after{content:"";flex:1;height:2px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 14px);}
+  .sect-h em{font-style:normal;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:12px;color:var(--aka);letter-spacing:.18em;}
+
+  /* ---- number cards ---- */
+  .subNums{display:flex;gap:10px;flex-wrap:wrap}
+  .nc{
+    flex:1;min-width:100px;
+    background:var(--kinari);
+    border:2px solid var(--gold-deep);
+    border-radius:15px;
+    padding:12px 8px 12px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .nc .l{font-size:11.5px;font-weight:700;color:var(--navy);letter-spacing:.05em;margin-bottom:6px}
+  .nc svg{width:60px;height:60px;display:block;margin:0 auto;}
+  .nc .v{
+    font-family:'Dela Gothic One',sans-serif;
+    font-size:24px;line-height:1.2;color:var(--navy);margin-top:4px;
+  }
+  .nc .bn{font-size:11.5px;font-weight:700;color:var(--aka);margin-top:1px;line-height:1.4;}
+  .nc .kw{font-size:11px;color:var(--cha);margin-top:3px;line-height:1.5;}
+  .nc.master{border-color:var(--aka);border-width:3px;background:var(--paper);}
+  .nc.master .tag{
+    position:absolute;top:7px;right:7px;
+    font-size:9px;font-weight:700;letter-spacing:.12em;
+    color:#fff;background:var(--aka);border-radius:20px;padding:1px 7px;
+  }
+
+  .calc{
+    font-size:12.5px;color:var(--cha);
+    background:var(--paper);border:2px dashed var(--gold-deep);border-radius:11px;
+    padding:11px 13px;margin-top:12px;line-height:2;
+  }
+  .calc .arrow{color:var(--aka);padding:0 5px;font-weight:700;}
+  .calc b{color:var(--navy);font-weight:700;}
+
+  /* ---- letter map ---- */
+  .letterMap{margin-top:12px}
+  .lm-grid{display:flex;flex-wrap:wrap;gap:6px}
+  .lm{
+    width:38px;text-align:center;
+    background:#fff;border:2px solid var(--gold-deep);border-radius:8px;padding:4px 0;
+  }
+  .lm.vowel{border-color:var(--aka);background:#FDEBE4;}
+  .lm .c{font-family:'Dela Gothic One',sans-serif;font-size:14px;color:var(--navy);line-height:1.2;}
+  .lm .n{font-size:11px;font-weight:700;color:var(--gold-deep);margin-top:1px}
+  .lm.vowel .n{color:var(--aka);}
+  .legend{font-size:11px;font-weight:700;color:var(--cha);margin-top:9px;display:flex;align-items:center;gap:6px}
+  .legend i{width:12px;height:12px;border-radius:4px;background:#FDEBE4;border:2px solid var(--aka);display:inline-block}
+
+  /* ---- synthesis ---- */
+  .synthBlock{
+    background:var(--kinari);
+    border:2px solid var(--gold-deep);border-radius:15px;
+    padding:14px 15px 5px;margin-bottom:12px;
+  }
+  .synthTitle{
+    font-family:'Dela Gothic One',sans-serif;
+    font-size:15px;color:var(--navy);
+    margin-bottom:11px;letter-spacing:.05em;
+    display:flex;align-items:center;gap:8px;
+  }
+  .synthTitle::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold);border:2.5px solid var(--aka);}
+  .synthItem{display:flex;gap:11px;margin-bottom:12px;align-items:flex-start}
+  .chip{
+    flex:0 0 auto;
+    font-size:11.5px;font-weight:700;color:#fff;
+    border-radius:20px;
+    padding:4px 12px;white-space:nowrap;margin-top:2px;
+    background:var(--navy);
+  }
+  .chip.master{background:var(--aka);}
+  .synthText{font-size:13.5px;color:var(--cha);line-height:1.8;}
+
+  .empty,.hint{
+    font-size:13px;color:#8a6f4f;line-height:1.8;
+    background:var(--paper);border:2px dashed var(--gold-deep);border-radius:13px;
+    padding:16px;text-align:center;
+  }
+  .hint{text-align:left;border-style:solid;margin-top:12px;font-size:12px}
+
+  .shiran{text-align:center;font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.1em;margin-top:14px;}
+
+  .foot{text-align:center;margin-top:40px;font-size:11.5px;color:var(--cha);letter-spacing:.06em;line-height:1.9;}
+  .foot .b{font-family:'Dela Gothic One',sans-serif;color:var(--navy);letter-spacing:.15em;}
+  .foot .yawaraka{color:var(--aka);font-weight:700;}
+
+  @media (prefers-reduced-motion:no-preference){
+    .out>*{animation:rise .5s ease both}
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <svg class="heroCoin" viewBox="0 0 170 170" role="img" aria-label="ぱんうらないのコイン">
+      <circle cx="85" cy="85" r="83" fill="#C6362F"/>
+      <circle cx="85" cy="85" r="76" fill="#E8B93E"/>
+      <circle cx="85" cy="85" r="70" fill="none" stroke="#C99A25" stroke-width="2" stroke-dasharray="3 4"/>
+      <text x="85" y="82" text-anchor="middle" dominant-baseline="central"
+        font-family="'Dela Gothic One',sans-serif" font-size="78" fill="#1E2A63">も</text>
+      <path id="heroArc" d="M 30 108 A 60 60 0 0 0 140 108" fill="none"/>
+      <text font-size="12" fill="#C6362F" font-weight="bold" letter-spacing="3">
+        <textPath href="#heroArc" startOffset="50%" text-anchor="middle">ぱんうらない</textPath>
+      </text>
+    </svg>
+    <div class="brand">Mo.33</div>
+    <div class="mark">ぱん<span class="aka">数秘</span>鑑定</div>
+    <div class="sub">生年月日とお名前で読む、ぱんうらない</div>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <div class="eyebrow">01 &nbsp;<span>生年月日</span></div>
+    <div class="field">
+      <div class="dob">
+        <div class="u"><label>年</label><input id="year" inputmode="numeric" maxlength="4" placeholder="1990"></div>
+        <div class="g">/</div>
+        <div class="u"><label>月</label><input id="month" inputmode="numeric" maxlength="2" placeholder="4"></div>
+        <div class="g">/</div>
+        <div class="u"><label>日</label><input id="day" inputmode="numeric" maxlength="2" placeholder="15"></div>
+      </div>
+    </div>
+
+    <div class="eyebrow" style="margin-top:22px">02 &nbsp;<span>お名前</span></div>
+    <div class="field">
+      <label>ローマ字（例：SAKAMOTO NAOKI）</label>
+      <input id="name" placeholder="YOUR NAME" autocomplete="off" autocapitalize="characters">
+      <div class="note">※ 「しょってるもん」「たまちぃ」「パーソナリティ」の計算に使うで。ヘボン式ローマ字で、姓名の順はどっちでもええよ。母音は AEIOU で数えるで。</div>
+    </div>
+  </section>
+
+  <div class="out" id="out">
+    <div class="sect-h">生年月日から <em>うまれたひ</em></div>
+    <div id="birthNums"><div class="empty">生年月日を入れたら、「こんな人」「なんか得意」「あこがれてる」を出すで。</div></div>
+
+    <div class="sect-h">お名前から <em>おなまえ</em></div>
+    <div id="letterMap" class="letterMap"></div>
+    <div id="nameNums"><div class="empty">お名前（ローマ字）を入れたら、「しょってるもん」「たまちぃ」「パーソナリティ」を出すで。</div></div>
+
+    <div class="sect-h">総合鑑定 <em>そうごう</em></div>
+    <div id="synthesis"><div class="empty">生年月日（とお名前）を入れたら、合うてる仕事・れんあい・ええとこ・ちょっと苦手をまとめて鑑定するで。</div></div>
+    <p class="shiran" id="shiran" style="display:none">ほんま、しらんけど。</p>
+  </div>
+
+  <div class="foot">
+    ぱん屋だけどパンが作れないぱん屋が、ぱん占い始めました。<br>
+    あなたの今日が、<span class="yawaraka">少しやわらかく</span>なりますように。<br>
+    <span class="b">Pan uranai ／ Mo.33</span>　@sakamoto_no_mo
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const MASTERS = [11,22,33];
+const isMaster = n => MASTERS.includes(n);
+
+// 各数字のキーワード
+const KEYWORD = {
+  1:"独立・開拓", 2:"協調・受容", 3:"表現・創造", 4:"堅実・基盤",
+  5:"自由・変化", 6:"愛・調和", 7:"探究・精神", 8:"実現・豊かさ",
+  9:"完成・博愛", 11:"直感・啓示", 22:"実現力・建設", 33:"無償の愛・癒し"
+};
+
+// 数字→ぱん（@sakamoto_no_mo ぱん占いより）
+const BREAD_SHORT = {
+  1:"シンプル塩ぱん", 2:"ふんわりメロンパン", 3:"アンパンマンぱん", 4:"四角いスコーン",
+  5:"流行のマリトッツォ", 6:"ハイジの白パン", 7:"こだわりクロワッサン", 8:"黒カレーパン",
+  9:"王道バゲット", 11:"クセ強い食パン", 22:"バラエティサンド", 33:"カレーメロンパン"
+};
+
+// 鑑定テキスト（合うてる仕事 / れんあい / ええとこ / ちょっと苦手）
+const DETAILS = {
+  1:{career:"先頭切って道をひらく仕事が向いてるわ。起業とか企画とかリーダーとか、自分で決められる場所やと強い。指示待ちはたぶん3日で飽きるで。",
+     love:"ぐいぐいリードしたいタイプ。まっすぐで熱いねんけど、押しすぎたら相手引いてまうからな。言いたいこと言い合える相手やと長続きするで。",
+     strength:"決めるん早いし、動くんも早い。ゼロから立ち上げる突破力はピカイチや。気づいたらみんな付いてきてるで。",
+     weak:"我が強めで、人に頼るんがちょっと苦手。気ぃついたら一人で全部抱えてるやつや。たまには任せてみ。"},
+  2:{career:"人と人をつなぐ役まわりが天職や。サポート、調整、秘書、相談ごと——支える側に回ったら誰より輝くで。",
+     love:"尽くすタイプで、相手の気持ちにめっちゃ敏感。ただ遠慮しすぎて本音ためこみがちやから、たまには素直に甘えてええんやで。",
+     strength:"協調性と気配りの人。空気読むのうまいし、場をふわっと和ませる名調停役や。",
+     weak:"優柔不断で流されやすいとこあるな。傷つきやすいし、断るんも苦手。たまには「無理〜」て言うてええねんで。"},
+  3:{career:"表現とか創造の仕事が合うてる。デザイン、発信、接客、企画——明るさとアイデアで勝負できる場所へ行き。",
+     love:"楽しいが一番の恋愛。おしゃべり上手で、おるだけで場がパッと明るなる。ただ飽きっぽいのは自覚しとこな。一緒に笑える相手が正解や。",
+     strength:"表現力と明るさ。人を楽しませる天才で、アイデアも無限に湧いてくるタイプや。",
+     weak:"飽きっぽくて気分にムラが出やすい。コツコツ系はちょっと苦手やな。楽しみを混ぜたら続くで。"},
+  4:{career:"土台をつくる仕事で信頼される人。事務、管理、経理、職人仕事——正確さとコツコツが効く場所やと無敵や。",
+     love:"誠実で一途。ゆっくり信頼を積み上げていく恋やな。ロマンチックより安定重視で、めっちゃ堅実なパートナーになるで。",
+     strength:"堅実さと忍耐力。コツコツ積み上げるし、約束はきっちり守る。もう信用の塊や。",
+     weak:"変化がちょっと苦手で、頑固なとこもある。融通きかせるんと、人に頼るんも練習しよな。"},
+  5:{career:"変化と自由のある仕事が合うてる。営業、旅がらみ、企画、掛け持ち——じっとせんでええ環境やと生き生きするで。",
+     love:"自由がいちばんの恋愛。刺激と新鮮さが大事で、束縛されたら逃げたなる。お互いの自由を尊重できる相手が理想や。",
+     strength:"行動力と好奇心。どこ行ってもすぐ馴染む適応力で、変化をおもろがれる人や。",
+     weak:"飽きっぽくて落ち着かへんとこある。続けることと責任から、そーっと逃げがちや。ほどほどにな。"},
+  6:{career:"人を支えて育てる仕事が使命や。教育、美容、医療・福祉、飲食——愛と世話焼きを注げる場所で力出るで。",
+     love:"面倒見よくて家庭的。深く愛して尽くすタイプや。ただ世話焼きすぎ注意な。信じて任せたら、関係もっと育つで。",
+     strength:"思いやりと責任感。おるだけで周りがほっとする、癒しと調和の人や。",
+     weak:"お節介と自己犠牲に寄りがち。見返り求めて疲れるパターンや。まず自分にパンケーキ食べさしたって。"},
+  7:{career:"探究と専門性の仕事が天職。研究、分析、技術、鑑定・占い——深掘りできる分野でピカッと光る人や。",
+     love:"一人の時間も大事にする恋。心開くまで時間かかるけど、いっぺん信じた相手にはとことん誠実。心のつながり重視や。",
+     strength:"洞察力と集中力。本質をスッと見抜くし、自分だけの世界持ってるんがかっこええ。",
+     weak:"心閉じがちで、ほっとくと孤独になりやすい。理屈っぽく見られることもあるけど、それも味や。"},
+  8:{career:"大きく動かす仕事で真価発揮。経営、マネジメント、財務、事業運営——成果と責任をどーんとしょえる人や。",
+     love:"頼りがいのあるパートナー。守るし、支える。ただ仕事優先になりがちやから、意識して二人の時間つくったってな。",
+     strength:"実現力と統率力。目標をちゃんと形にして、豊かさを築ける人や。",
+     weak:"力みすぎて支配的になることもある。なんでも白黒つけんと、たまにはぼちぼちでええんやで。"},
+  9:{career:"人や社会に還元する仕事が合うてる。相談、支援、表現、ボランティア——広い視野で人を助ける場所や。",
+     love:"包容力の塊。相手を丸ごと受けとめる愛や。ただ自己犠牲に傾きがちやから、自分のことも大事にしいや。",
+     strength:"博愛と受容力。広い心で人を許せるし、「おるだけで癒される」て言われるタイプや。",
+     weak:"抱え込みがちで、理想も高め。手放されへんくて自分が後回しになる。まず自分から大事にしたってな。"},
+  11:{career:"直感とひらめきで勝負する仕事。占い、ヒーリング、クリエイティブ、人を導く分野でピカッと光るで。",
+      love:"感受性豊かで、心の深いつながりを求める恋。敏感やから傷つきやすい。安心できる相手がいちばんの薬や。",
+      strength:"直感の鋭さは天下一品。目に見えへんもんを感じ取って、人の背中をそっと押せる人や。",
+      weak:"繊細で不安定になりやすい。神経使いすぎて電池切れがちやから、こまめに充電しよな。"},
+  22:{career:"大きな構想を現実にする仕事。事業の立ち上げ、仕組みづくり、社会的なプロジェクト——スケールでかいほど燃えるで。",
+      love:"包容力あって、長い目で関係を築くタイプ。理想高い分、相手にも求めがちや。一緒に何か育てられる相手が理想やな。",
+      strength:"壮大なビジョンと実現力。夢を夢で終わらせへん、ほんまに形にしてまう人や。",
+      weak:"プレッシャーを一人で抱え込みがち。理想と現実の差にしんどなったら、いったん置いて休憩してええんやで。"},
+  33:{career:"無償の愛で人を癒す仕事が使命そのもの。占い、カウンセリング、教育——人を支えて導く場ぜんぶが持ち場や。",
+      love:"見返りを求めへん深い愛。相手を丸ごと包むで。ただ与えすぎて疲れんように、受け取る練習もしよな。",
+      strength:"限りない慈愛と癒しの力。おってくれるだけで救われる、そういう人や。",
+      weak:"背負い込みすぎて自分を犠牲にしがち。ぜんぶ一人でしょわんでええ。無理はせんときや。"}
+};
+
+// ---------- ぱんのイラスト（SVG） ----------
+const OL='stroke="#1E2A63" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+let uid=0;
+function breadArt(num){
+  switch(num){
+    case 1:
+      return `<path d="M16 55 Q19 37 50 34 Q81 37 84 55 Q81 73 50 76 Q19 73 16 55 Z" fill="#E8B04B" ${OL}/>
+      <path d="M38 38 Q31 55 38 72" fill="none" ${OL}/>
+      <path d="M50 35 Q44 55 50 75" fill="none" ${OL}/>
+      <path d="M62 38 Q57 55 62 72" fill="none" ${OL}/>
+      <circle cx="30" cy="48" r="1.8" fill="#fff"/><circle cx="72" cy="50" r="1.8" fill="#fff"/><circle cx="55" cy="46" r="1.8" fill="#fff"/>`;
+    case 2:
+      uid++;
+      return `<clipPath id="mp${uid}"><circle cx="50" cy="55" r="27"/></clipPath>
+      <circle cx="50" cy="55" r="27" fill="#F3D077" ${OL}/>
+      <g clip-path="url(#mp${uid})" ${OL} fill="none">
+        <path d="M20 40 L80 66"/><path d="M20 58 L80 84"/><path d="M20 22 L80 48"/>
+        <path d="M80 40 L20 66"/><path d="M80 58 L20 84"/><path d="M80 22 L20 48"/>
+      </g>
+      <circle cx="50" cy="55" r="27" fill="none" ${OL}/>`;
+    case 3:
+      return `<circle cx="50" cy="55" r="27" fill="#E8A34B" ${OL}/>
+      <circle cx="50" cy="58" r="8" fill="#D5643B" ${OL}/>
+      <circle cx="31" cy="60" r="6.5" fill="#D5643B" ${OL}/>
+      <circle cx="69" cy="60" r="6.5" fill="#D5643B" ${OL}/>
+      <circle cx="40" cy="47" r="2.4" fill="#1E2A63"/><circle cx="60" cy="47" r="2.4" fill="#1E2A63"/>
+      <path d="M36 39 Q40 36 44 39" fill="none" ${OL}/>
+      <path d="M56 39 Q60 36 64 39" fill="none" ${OL}/>
+      <path d="M44 70 Q50 74 56 70" fill="none" ${OL}/>`;
+    case 4:
+      return `<rect x="23" y="32" width="54" height="46" rx="10" fill="#DFAF63" ${OL}/>
+      <path d="M23 48 Q50 42 77 48" fill="none" ${OL}/>
+      <circle cx="38" cy="62" r="1.8" fill="#8A5A2B"/><circle cx="52" cy="68" r="1.8" fill="#8A5A2B"/>
+      <circle cx="63" cy="58" r="1.8" fill="#8A5A2B"/><circle cx="45" cy="40" r="1.8" fill="#8A5A2B"/>`;
+    case 5:
+      return `<circle cx="50" cy="55" r="27" fill="#C98A46" ${OL}/>
+      <path d="M23 55 Q34 44 50 44 Q66 44 77 55 Q66 66 50 66 Q34 66 23 55 Z" fill="#FFF9EC" ${OL}/>
+      <circle cx="38" cy="52" r="4" fill="#FFF9EC" ${OL}/>
+      <circle cx="50" cy="50" r="4.5" fill="#FFF9EC" ${OL}/>
+      <circle cx="62" cy="52" r="4" fill="#FFF9EC" ${OL}/>`;
+    case 6:
+      return `<circle cx="50" cy="55" r="27" fill="#FBF2DF" ${OL}/>
+      <path d="M50 36 Q45 55 50 74" fill="none" ${OL}/>
+      <ellipse cx="36" cy="66" rx="6" ry="3.5" fill="#F0D9A8"/>
+      <ellipse cx="64" cy="66" rx="6" ry="3.5" fill="#F0D9A8"/>`;
+    case 7:
+      return `<ellipse cx="29" cy="61" rx="12" ry="15" transform="rotate(-32 29 61)" fill="#DFA24E" ${OL}/>
+      <ellipse cx="71" cy="61" rx="12" ry="15" transform="rotate(32 71 61)" fill="#DFA24E" ${OL}/>
+      <ellipse cx="50" cy="52" rx="17" ry="21" fill="#E8B45C" ${OL}/>
+      <path d="M38 44 Q34 52 37 62" fill="none" ${OL}/>
+      <path d="M62 44 Q66 52 63 62" fill="none" ${OL}/>`;
+    case 8:
+      return `<ellipse cx="50" cy="55" rx="33" ry="21" fill="#8A5A2B" ${OL}/>
+      <circle cx="35" cy="50" r="1.7" fill="#E8C989"/><circle cx="46" cy="62" r="1.7" fill="#E8C989"/>
+      <circle cx="58" cy="48" r="1.7" fill="#E8C989"/><circle cx="66" cy="58" r="1.7" fill="#E8C989"/>
+      <circle cx="52" cy="44" r="1.7" fill="#E8C989"/><circle cx="30" cy="60" r="1.7" fill="#E8C989"/>`;
+    case 9:
+      return `<ellipse cx="50" cy="55" rx="36" ry="13" transform="rotate(-22 50 55)" fill="#E0A45C" ${OL}/>
+      <ellipse cx="36" cy="59" rx="2.5" ry="6" transform="rotate(-60 36 59)" fill="#FFF3D9" ${OL}/>
+      <ellipse cx="50" cy="54" rx="2.5" ry="6" transform="rotate(-60 50 54)" fill="#FFF3D9" ${OL}/>
+      <ellipse cx="64" cy="49" rx="2.5" ry="6" transform="rotate(-60 64 49)" fill="#FFF3D9" ${OL}/>`;
+    case 11:
+      return `<path d="M27 78 L27 47 Q27 33 39 33 Q43 26 50 28 Q57 26 61 33 Q73 33 73 47 L73 78 Z" fill="#F2D9A0" ${OL}/>
+      <path d="M35 72 L35 50 Q35 42 42 41 Q46 37 50 38 Q54 37 58 41 Q65 42 65 50 L65 72 Z" fill="none" stroke="#C99A25" stroke-width="2.5" stroke-linejoin="round"/>`;
+    case 22:
+      return `<path d="M20 76 L50 26 L80 76 Z" fill="#FBF2DF" ${OL}/>
+      <path d="M28 68 Q36 64 44 68 Q52 64 60 68 Q66 64 72 68" fill="none" stroke="#5B8C3E" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M32 73 L68 73" stroke="#C6362F" stroke-width="3.5" stroke-linecap="round"/>`;
+    case 33:
+      uid++;
+      return `<clipPath id="mp${uid}"><circle cx="50" cy="55" r="27"/></clipPath>
+      <circle cx="50" cy="55" r="27" fill="#C98A3F" ${OL}/>
+      <g clip-path="url(#mp${uid})" ${OL} fill="none">
+        <path d="M20 40 L80 66"/><path d="M20 58 L80 84"/><path d="M20 22 L80 48"/>
+        <path d="M80 40 L20 66"/><path d="M80 58 L20 84"/><path d="M80 22 L20 48"/>
+      </g>
+      <circle cx="50" cy="55" r="27" fill="none" ${OL}/>
+      <circle cx="42" cy="48" r="1.7" fill="#8A3B22"/><circle cx="60" cy="60" r="1.7" fill="#8A3B22"/>`;
+  }
+  return '';
+}
+// コイン（赤縁×金）の上にぱんを乗せたミニアイコン
+function breadCoin(num){
+  const art=breadArt(num);
+  if(!art) return '';
+  return `<svg viewBox="0 0 120 120" role="img" aria-label="${BREAD_SHORT[num]||''}">
+    <circle cx="60" cy="60" r="58" fill="#C6362F"/>
+    <circle cx="60" cy="60" r="52" fill="#E8B93E"/>
+    <g transform="translate(60,62) scale(0.92) translate(-50,-55)">${art}</g>
+  </svg>`;
+}
+
+// 数字をひと桁（マスター保持）に還元。計算過程も返す
+function reduce(n){
+  const steps=[n];
+  while(n>9 && !isMaster(n)){
+    n=String(n).split('').reduce((a,d)=>a+(+d),0);
+    steps.push(n);
+  }
+  return {value:n, steps, total:steps[0]};
+}
+function digitSum(s){
+  return String(s).split('').reduce((a,c)=>a+(+c),0);
+}
+
+// ローマ字→数（ピタゴラス式）
+const LETVAL={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const VOWELS="AEIOU";
+
+function fromLetters(letters){
+  const total=letters.reduce((a,c)=>a+LETVAL[c],0);
+  return reduce(total);
+}
+
+// ---- 生年月日の計算 ----
+function calcBirth(y,m,d){
+  const total=digitSum(y+m+d);
+  return {
+    lp:reduce(total),
+    past:reduce(+d),                 // なんか得意（過去数）＝生まれた日
+    future:reduce(digitSum(''+m+d))  // あこがれてる（未来数）＝生まれた日と月
+  };
+}
+
+// ---- お名前の計算 ----
+function calcName(raw){
+  const letters=raw.toUpperCase().split('').filter(c=>LETVAL[c]);
+  if(!letters.length) return null;
+  const vowels=letters.filter(c=>VOWELS.includes(c));
+  const cons=letters.filter(c=>!VOWELS.includes(c));
+  return {
+    letters,
+    destiny:fromLetters(letters),
+    soul:vowels.length?fromLetters(vowels):{value:0,steps:[0],total:0},
+    persona:cons.length?fromLetters(cons):{value:0,steps:[0],total:0}
+  };
+}
+
+// ---- 描画ヘルパー ----
+function numCard(label,r){
+  const m=isMaster(r.value);
+  return '<div class="nc'+(m?' master':'')+'">'+
+    (m?'<div class="tag">マスター</div>':'')+
+    '<div class="l">'+label+'</div>'+
+    breadCoin(r.value)+
+    '<div class="v">'+r.value+'</div>'+
+    (BREAD_SHORT[r.value]?'<div class="bn">'+BREAD_SHORT[r.value]+'</div>':'')+
+    '<div class="kw">'+(KEYWORD[r.value]||'')+'</div></div>';
+}
+function chain(steps){
+  return steps.map((s,i)=>(i?'<span class="arrow">→</span>':'')+'<b>'+s+'</b>').join('');
+}
+
+function render(){
+  const y=$("year").value.trim(), m=$("month").value.trim(), d=$("day").value.trim();
+  const nameRaw=$("name").value.trim();
+  const birthReady = y.length===4 && +m>=1 && +m<=12 && +d>=1 && +d<=31;
+  const birth = birthReady ? calcBirth(y,m,d) : null;
+  const nm = nameRaw ? calcName(nameRaw) : null;
+
+  // 生年月日ブロック
+  if(birth){
+    $("birthNums").innerHTML =
+      '<div class="subNums">'+numCard('こんな人',birth.lp)+numCard('なんか得意',birth.past)+numCard('あこがれてる',birth.future)+'</div>'+
+      '<div class="calc">こんな人：生年月日ぜんぶ足して '+chain(birth.lp.steps)+
+      '<br>なんか得意：生まれた日 '+chain(birth.past.steps)+
+      '　あこがれてる：日と月を足して '+chain(birth.future.steps)+'</div>';
+  }else{
+    $("birthNums").innerHTML='<div class="empty">生年月日を入れたら、「こんな人」「なんか得意」「あこがれてる」を出すで。</div>';
+  }
+
+  // 文字マップ
+  if(nm){
+    $("letterMap").innerHTML =
+      '<div class="lm-grid">'+nm.letters.map(c=>
+        '<div class="lm'+(VOWELS.includes(c)?' vowel':'')+'"><div class="c">'+c+'</div><div class="n">'+LETVAL[c]+'</div></div>'
+      ).join('')+'</div>'+
+      '<div class="legend"><i></i>= 母音（たまちぃに使うで）</div>';
+  }else{
+    $("letterMap").innerHTML='';
+  }
+
+  // お名前ブロック
+  if(nm){
+    $("nameNums").innerHTML =
+      '<div class="subNums">'+numCard('しょってるもん',nm.destiny)+numCard('たまちぃ',nm.soul)+numCard('パーソナリティ',nm.persona)+'</div>'+
+      '<div class="calc">しょってるもん（全文字）：'+chain(nm.destiny.steps)+
+      '<br>たまちぃ（母音）：'+chain(nm.soul.steps)+
+      '　パーソナリティ（子音）：'+chain(nm.persona.steps)+'</div>';
+  }else{
+    $("nameNums").innerHTML='<div class="empty">お名前（ローマ字）を入れたら、「しょってるもん」「たまちぃ」「パーソナリティ」を出すで。</div>';
+  }
+
+  // 総合鑑定
+  if(birth){
+    const uniq=list=>{const seen=new Set();return list.filter(x=>x.num!=null&&x.num!==0&&!seen.has(x.num)&&seen.add(x.num));};
+    const syn={
+      "合うてる仕事":uniq([{label:"こんな人",num:birth.lp.value},{label:"しょってるもん",num:nm&&nm.destiny.value}]).map(x=>({...x,f:"career"})),
+      "れんあい":uniq([{label:"たまちぃ",num:nm&&nm.soul.value},{label:"あこがれてる",num:birth.future.value}]).map(x=>({...x,f:"love"})),
+      "ええとこ":uniq([{label:"こんな人",num:birth.lp.value},{label:"なんか得意",num:birth.past.value}]).map(x=>({...x,f:"strength"})),
+      "ちょっと苦手":uniq([{label:"こんな人",num:birth.lp.value},{label:"パーソナリティ",num:nm&&nm.persona.value}]).map(x=>({...x,f:"weak"}))
+    };
+    let html="";
+    for(const [title,items] of Object.entries(syn)){
+      html+='<div class="synthBlock"><div class="synthTitle">'+title+'</div>'+
+        items.map(x=>
+          '<div class="synthItem"><div class="chip'+(isMaster(x.num)?' master':'')+'">'+x.label+' '+x.num+'</div>'+
+          '<div class="synthText">'+DETAILS[x.num][x.f]+'</div></div>'
+        ).join('')+'</div>';
+    }
+    if(!nm) html+='<div class="hint">※ お名前も入れたら、「しょってるもん」「たまちぃ」「パーソナリティ」も足して、もっと深い鑑定になるで。</div>';
+    $("synthesis").innerHTML=html;
+    $("shiran").style.display='block';
+  }else{
+    $("synthesis").innerHTML='<div class="empty">生年月日（とお名前）を入れたら、合うてる仕事・れんあい・ええとこ・ちょっと苦手をまとめて鑑定するで。</div>';
+    $("shiran").style.display='none';
+  }
+}
+
+["year","month","day"].forEach(id=>{
+  $(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"");render();});
+});
+$("name").addEventListener("input",render);
+render();
+</script>
+</body>
+</html>
