@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF3E2">
+<title>ぱん暦 | Mo.33 あなたの今年の動き方</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E2; --kinari:#FFFAEE; --paper:#FFF4DA;
+    --gold:#E8B93E; --gold-deep:#C99A25;
+    --navy:#1E2A63; --aka:#C6362F; --cha:#4A2F1F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Zen Maru Gothic',-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    background-color:var(--cream);
+    background-image:radial-gradient(rgba(201,154,37,.14) 1.5px,transparent 1.6px);
+    background-size:22px 22px;
+    color:var(--cha);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 80px}
+
+  .hero{text-align:center;padding:36px 0 20px}
+  .brand{font-size:12px;letter-spacing:.35em;color:var(--aka);font-weight:700;padding-left:.35em}
+  .mark{font-family:'Dela Gothic One',sans-serif;font-size:38px;line-height:1.25;color:var(--navy);margin:6px 0 4px;letter-spacing:.04em}
+  .mark .aka{color:var(--aka)}
+  .sub{font-size:13.5px;letter-spacing:.06em}
+  .rule{width:64px;height:3px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+  .card{background:var(--kinari);border:3px solid var(--aka);border-radius:18px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:20px;margin-top:16px}
+  .eyebrow{font-family:'Dela Gothic One',sans-serif;font-size:12px;letter-spacing:.2em;color:var(--aka);
+    display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .eyebrow span{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;color:var(--navy)}
+  .dob{display:flex;align-items:flex-end;gap:8px}
+  .dob .u{flex:1}
+  .dob label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-align:center}
+  .dob .g{padding-bottom:12px;color:var(--gold-deep);font-weight:700}
+  input,select{width:100%;font-family:inherit;font-size:17px;font-weight:700;color:var(--navy);
+    background:#fff;border:2px solid var(--gold-deep);border-radius:12px;padding:11px 12px;text-align:center;
+    appearance:none;-webkit-appearance:none}
+  input:focus-visible,select:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+  .note{font-size:11.5px;color:#8a6f4f;margin-top:10px;line-height:1.7}
+
+  .sect-h{display:flex;align-items:center;gap:10px;font-family:'Dela Gothic One',sans-serif;
+    font-size:17px;color:var(--navy);letter-spacing:.05em;margin:32px 4px 14px}
+  .sect-h::after{content:"";flex:1;height:2px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 14px)}
+  .sect-h em{font-style:normal;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:12px;color:var(--aka);letter-spacing:.18em}
+
+  /* 結果ヘッド */
+  .headCard{background:var(--kinari);border:3px solid var(--aka);border-radius:20px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:22px 18px 20px;text-align:center}
+  .coinWrap{display:flex;justify-content:center;perspective:900px}
+  .coin{width:190px;height:190px}
+  .anim .coin{animation:flip 1s ease-out both}
+  @keyframes flip{0%{transform:rotateY(0) scale(.6);opacity:0}60%{transform:rotateY(540deg) scale(1.05);opacity:1}100%{transform:rotateY(720deg) scale(1)}}
+  @media (prefers-reduced-motion:reduce){.anim .coin{animation:none}}
+  .yearLabel{font-size:12.5px;font-weight:700;color:var(--aka);letter-spacing:.15em;margin-bottom:6px}
+  .stageNo{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--gold-deep);letter-spacing:.1em;margin-top:10px}
+  .stageName{font-family:'Dela Gothic One',sans-serif;font-size:27px;color:var(--navy);line-height:1.35;letter-spacing:.02em}
+  .stageCatch{font-size:13.5px;font-weight:700;color:var(--aka);margin-top:4px;letter-spacing:.05em}
+  .stageMsg{font-size:14.5px;margin:14px auto 0;max-width:420px;text-align:left}
+
+  /* 工程バー */
+  .flow{display:flex;gap:4px;margin-top:16px}
+  .fl{flex:1;text-align:center;font-size:9.5px;font-weight:700;color:#b39a72;line-height:1.4}
+  .fl i{display:block;height:8px;border-radius:5px;background:#EADFC2;margin-bottom:5px}
+  .fl.on{color:var(--aka)}
+  .fl.on i{background:var(--aka)}
+  .fl.done i{background:var(--gold)}
+
+  /* 行動 */
+  .block{background:var(--kinari);border:2px solid var(--gold-deep);border-radius:15px;padding:14px 16px 6px;margin-bottom:12px}
+  .blockT{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--navy);margin-bottom:10px;
+    display:flex;align-items:center;gap:8px;letter-spacing:.04em}
+  .blockT::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold);border:2.5px solid var(--aka);flex:0 0 auto}
+  .blockT.ng::before{background:#fff}
+  ul{list-style:none}
+  li{font-size:13.5px;display:flex;gap:9px;margin-bottom:10px;align-items:flex-start}
+  li::before{content:"●";color:var(--gold-deep);font-size:10px;line-height:2.1;flex:0 0 auto}
+  li.ng::before{content:"×";color:var(--aka);font-weight:700;font-size:13px;line-height:1.5}
+
+  /* 今月 */
+  .monthBox{background:var(--paper);border:2px dashed var(--gold-deep);border-radius:15px;padding:14px 16px}
+  .monthTop{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .monthTop svg{width:58px;height:58px;flex:0 0 auto}
+  .monthNo{font-size:11.5px;font-weight:700;color:var(--aka);letter-spacing:.1em}
+  .monthName{font-family:'Dela Gothic One',sans-serif;font-size:19px;color:var(--navy);line-height:1.3}
+  .monthMsg{font-size:13.5px}
+  .monthSel{margin-top:12px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--cha)}
+  .monthSel select{flex:0 0 110px;font-size:15px;padding:8px}
+
+  .empty{font-size:13px;color:#8a6f4f;background:var(--paper);border:2px dashed var(--gold-deep);
+    border-radius:13px;padding:18px;text-align:center;line-height:1.9}
+  .shiran{text-align:center;font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.1em;margin-top:16px}
+  .foot{text-align:center;margin-top:36px;font-size:11.5px;letter-spacing:.05em;line-height:1.9}
+  .foot .b{font-family:'Dela Gothic One',sans-serif;color:var(--navy);letter-spacing:.15em}
+  .foot .yawaraka{color:var(--aka);font-weight:700}
+  @media (prefers-reduced-motion:no-preference){.anim .block,.anim .monthBox,.anim .headCard{animation:rise .5s ease both}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="brand">Mo.33</div>
+    <div class="mark">ぱん<span class="aka">暦</span></div>
+    <div class="sub">あなたの今年の動き方、パンで例えるよ！占い</div>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <div class="eyebrow">01 &nbsp;<span>お誕生日</span></div>
+    <div class="dob">
+      <div class="u"><label>年</label><input id="year" inputmode="numeric" maxlength="4" placeholder="1990"></div>
+      <div class="g">/</div>
+      <div class="u"><label>月</label><input id="month" inputmode="numeric" maxlength="2" placeholder="4"></div>
+      <div class="g">/</div>
+      <div class="u"><label>日</label><input id="day" inputmode="numeric" maxlength="2" placeholder="15"></div>
+    </div>
+    <div class="eyebrow" style="margin-top:20px">02 &nbsp;<span>占う年</span></div>
+    <select id="targetYear"></select>
+    <div class="note">※ 生まれた月と日に、占う年を足して出すで（＝パーソナルイヤー）。9年でひと回り、パンの仕込みから販売までがちょうど一周や。</div>
+  </section>
+
+  <div id="out">
+    <div class="sect-h">今年のあなた <em>ことし</em></div>
+    <div id="result"><div class="empty">生年月日を入れたら、今年があなたにとって「パンのどの工程の年か」を鑑定するで。</div></div>
+  </div>
+
+  <div class="foot">
+    ぱん屋だけどパンが作れないぱん屋が、ぱん占い始めました。<br>
+    あなたの今年が、<span class="yawaraka">ええ感じにふくらみます</span>ように。<br>
+    <span class="b">Pan uranai ／ Mo.33</span>　@sakamoto_no_mo
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const dsum=s=>String(s).split('').reduce((a,c)=>a+(+c||0),0);
+function red9(n){while(n>9)n=dsum(n);return n;}
+
+// ---- 9つの工程 ----
+const STAGE={
+1:{no:"工程 1／9",name:"仕込み",catch:"粉をあける年",
+  msg:"新しい生地をこねはじめる年や。まだ何の形にもなってへんけど、ここで入れた材料が、この先9年ぜんぶの味を決めるで。周りが見えてなくて当たり前。とにかく最初のひとこねから。",
+  do:["やりたいこと、いっこ声に出して宣言してみ。人に言うた時点でもう仕込みは始まっとる。",
+      "新しいこと1つだけ始める。趣味でも勉強でも、小さいやつでええ。",
+      "「これで行く」いう方針を紙に書いて貼っとき。9年ぶんの看板になるで。",
+      "誰かの許可待ちせんと、自分で決める練習の年や。"],
+  ng:["去年までのやり方を、そのまま引き継ごうとせんこと。",
+      "すぐ結果が出えへんて焦らんこと。粉の段階で味見しても、そら粉の味や。"]},
+2:{no:"工程 2／9",name:"ねかせ・一次発酵",catch:"じっと待つ年",
+  msg:"こねた生地を寝かせる年。見た目はなんも動いてへんけど、中では菌がめっちゃ働いてる。動かんことが仕事の年やから、焦って触ったらしぼむで。人とのご縁が育つ年でもある。",
+  do:["去年始めたことを、静かに続ける。伸ばさんでええ、続けるだけでええ。",
+      "人に相談する、頼る。今年は一人で頑張るより、誰かと組むほうが早い。",
+      "細かいご縁を大事に。今年つながった人が、後で効いてくるで。",
+      "しんどい時は素直に「しんどい」て言う。それも発酵や。"],
+  ng:["結果が見えへんからて、途中で生地を捨てんこと。",
+      "せっかちに引っ張らんこと。今年の停滞は、失敗ちゃうで。"]},
+3:{no:"工程 3／9",name:"ガス抜き・分割",catch:"ふくらんだんを、いっぺん出す年",
+  msg:"ぷっくりふくらんだ生地のガスを抜いて、切り分ける年。溜まってたもんを外に出して、あちこちに配る年や。楽しいことがそのまま正解になる、いちばん軽い年やで。",
+  do:["溜め込んでたアイデア、とりあえず外に出す。SNSでも人にしゃべるんでもええ。",
+      "誘われた場所には行っとき。今年の出会いは軽いノリからくる。",
+      "いくつか同時に手ぇ出してええ年。分割の年やから、絞らんでええ。",
+      "写真、文章、しゃべり。なんでもええから発信を1つ習慣に。"],
+  ng:["ひとつに絞りこもうとせんこと。それは来年の仕事や。",
+      "「ちゃんとしてから」て黙っとかんこと。今年は出したもん勝ちや。"]},
+4:{no:"工程 4／9",name:"成形",catch:"形をきっちり決める年",
+  msg:"切り分けた生地を、丸めて型に入れる年。今年サボった形は、そのまま焼き上がるからな。地味やけど、この9年でいちばん効く年や。土台、契約、体づくり、ぜんぶ今年。",
+  do:["数字と紙をきっちりする。お金の流れ、契約、書類、健康診断。",
+      "続けるための「型」をつくる。毎週◯曜はこれ、みたいな決めごとやな。",
+      "散らかってるもんを整理。要らんもんは今年のうちに捨てとき。",
+      "資格や勉強があるなら今年着手。地道が効く年や。"],
+  ng:["おもろないからて放り出さんこと。今年の退屈は、来年のふくらみや。",
+      "勢いだけで新しいこと足さんこと。まず今あるやつを整える。"]},
+5:{no:"工程 5／9",name:"二次発酵",catch:"ぐんとふくらむ年",
+  msg:"型に入れた生地が、いっきにふくらむ年。去年きっちり形にしたぶんだけ、今年は動いて広がるで。予定外のことも起きるけど、それがふくらみの正体や。出かけたモン勝ち。",
+  do:["行ったことない場所、会うたことない人。今年は動くほど広がる。",
+      "誘いは基本イエス。今年の予定外は、だいたい当たりや。",
+      "環境を変えてみる。引っ越し、部署、働き方——変化がええ方に転ぶ年。",
+      "発信の量を増やす。届く範囲が今年いちばん伸びるで。"],
+  ng:["じっとして機会を逃さんこと。今年の停滞はもったいない。",
+      "手ぇ広げすぎて全部中途半端も注意。ふくらみすぎたら生地は破れる。"]},
+6:{no:"工程 6／9",name:"仕上げ・クープ入れ",catch:"人のために手をかける年",
+  msg:"焼く直前、クープ入れて卵ぬる年。自分のためというより、食べる人のためにひと手間かける年や。家族、仲間、お客さん——人まわりのことが、そのまま今年のテーマになるで。",
+  do:["家族や身近な人との時間を、意識してとる。今年はそこが本業や。",
+      "誰かに教える、育てる。あなたの経験を渡す年やで。",
+      "見た目・見せ方を整える。ロゴ、名刺、部屋、身なり。ツヤ出しの年や。",
+      "頼まれごとは受けたって。今年の貸しは、ちゃんと返ってくる。"],
+  ng:["ぜんぶ自分で背負い込まんこと。焼く前に力尽きたらあかん。",
+      "見返り求めて疲れんこと。今年はやっとくだけでちゃんと効く。"]},
+7:{no:"工程 7／9",name:"焼成",catch:"窯の中で、静かに火が通る年",
+  msg:"窯に入れて扉を閉める年。中は見えへんし、外から触られへん。せやから一人の時間が増えるけど、それでええねん。今年のあなたは、見えへんとこで芯まで焼けてってる最中や。",
+  do:["ひとりの時間を意識してつくる。今年の答えは静かなとこにある。",
+      "勉強、読書、資格、内省。深掘りが効く年や。",
+      "人間関係を整理してええ年。無理して広げんでええ。",
+      "体を休める。今年の疲れは、あとで効いてくるで。"],
+  ng:["扉を何回も開けんこと。焦って結果を確認しにいくと生焼けになる。",
+      "誰にも会えへん時期を、失敗と思わんこと。焼けてる最中や。"]},
+8:{no:"工程 8／9",name:"窯出し・値つけ",catch:"焼き上がりを、ちゃんと受け取る年",
+  msg:"焼けたパンを窯から出して、値ぇつけて棚に並べる年。この9年で積んできたもんが、目に見える形で返ってくるで。遠慮せんと受け取り。ちゃんと値ぇつけるのも今年の仕事や。",
+  do:["成果を人に見せる。発表、出店、応募、営業——出すこと自体が今年の運や。",
+      "お金の話をちゃんとする。値上げ、交渉、独立の相談も今年やで。",
+      "任される話が来たら受けとき。器がひとまわり大きなる年や。",
+      "自分の実績を数えて、書き出してみ。想像より積んどるから。"],
+  ng:["「まだ早い」て安売りせんこと。焼けたパンは、焼けた値段で出す。",
+      "力みすぎて周りを置いてかんこと。棚に並べるんは一人ではできひん。"]},
+9:{no:"工程 9／9",name:"販売・店じまい",catch:"手放して、次の粉を用意する年",
+  msg:"焼いたパンをお客さんに渡して、店を片付ける年。9年のシメやから、増やす年ちゃう、渡して手放す年や。寂しさもあるけど、棚を空けとかんと来年の新しい生地が置けへんで。",
+  do:["区切りをつける。終わった役割、合わへん関係、置きっぱなしのモノ。",
+      "人に渡す。教える、譲る、引き継ぐ。今年の親切は倍で返ってくる。",
+      "この9年を振り返って書き出す。次の仕込みの材料表になるで。",
+      "身軽になる。断捨離、解約、整理。空けたぶんだけ来年入る。"],
+  ng:["新しい大勝負を今年始めんこと。仕込みは来年からのほうが伸びる。",
+      "しがみつかんこと。手放すんが今年の仕事や。"]}
+};
+
+// ---- 今月の動き（パーソナルマンス） ----
+const MONTH={
+1:{n:"仕込みの月",m:"新しいこと言い出すのに向いた月。小さい一歩でええから、今月中に踏み出しとき。"},
+2:{n:"ねかせの月",m:"急がんでええ月。人と話す、頼る、待つ。動かんことが今月の正解や。"},
+3:{n:"ガス抜きの月",m:"外に出して発信する月。楽しいこと優先で動いたら、ちょうどええ感じや。"},
+4:{n:"成形の月",m:"地味に整える月。数字、書類、片付け。今月のきっちりが後で効くで。"},
+5:{n:"二次発酵の月",m:"動くほど広がる月。誘いに乗って、行ったことない場所へどうぞ。"},
+6:{n:"仕上げの月",m:"人まわりの月。家族や仲間との時間、見た目の手入れにひと手間かけたって。"},
+7:{n:"焼成の月",m:"静かに過ごす月。一人時間と休養を確保。無理に広げんでええ。"},
+8:{n:"窯出しの月",m:"成果を出す月。発表、交渉、お金の話。遠慮せんと前に出とき。"},
+9:{n:"店じまいの月",m:"片付けの月。終わらせる、渡す、捨てる。空けたぶんだけ次が入る。"}
+};
+
+// ---- 工程イラスト ----
+const OL='stroke="#1E2A63" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+function stageArt(n){
+  switch(n){
+    case 1: // ボウルと粉
+      return `<path d="M20 52 Q50 44 80 52 Q76 78 50 80 Q24 78 20 52 Z" fill="#FBF2DF" ${OL}/>
+      <ellipse cx="50" cy="52" rx="30" ry="8" fill="#F2E2BE" ${OL}/>
+      <path d="M42 30 Q50 24 58 30" fill="none" ${OL}/>
+      <circle cx="38" cy="36" r="2" fill="#C99A25"/><circle cx="52" cy="32" r="2" fill="#C99A25"/><circle cx="62" cy="38" r="2" fill="#C99A25"/>`;
+    case 2: // ふきんを掛けた生地
+      return `<ellipse cx="50" cy="62" rx="30" ry="20" fill="#F2D9A0" ${OL}/>
+      <path d="M20 62 Q30 44 50 44 Q70 44 80 62" fill="#FBF2DF" ${OL}/>
+      <path d="M28 56 L34 62 M40 50 L46 56 M54 50 L60 56 M66 56 L72 62" fill="none" stroke="#C99A25" stroke-width="2.5" stroke-linecap="round"/>`;
+    case 3: // 分割された生地
+      return `<circle cx="30" cy="62" r="15" fill="#F2D9A0" ${OL}/>
+      <circle cx="62" cy="66" r="12" fill="#F2D9A0" ${OL}/>
+      <circle cx="52" cy="38" r="11" fill="#F2D9A0" ${OL}/>
+      <path d="M74 30 L86 42" ${OL} fill="none"/><path d="M80 26 L90 36" ${OL} fill="none"/>`;
+    case 4: // 型に入った生地
+      return `<path d="M22 44 L78 44 L72 80 L28 80 Z" fill="#DCC49A" ${OL}/>
+      <path d="M30 44 Q34 30 42 32 Q50 26 58 32 Q66 30 70 44 Z" fill="#F2D9A0" ${OL}/>`;
+    case 5: // ふくらんだ生地＋矢印
+      return `<path d="M22 78 Q22 42 50 42 Q78 42 78 78 Z" fill="#F5DFAC" ${OL}/>
+      <path d="M50 34 L50 16" ${OL} fill="none"/><path d="M43 23 L50 15 L57 23" ${OL} fill="none"/>`;
+    case 6: // クープ入れ
+      return `<ellipse cx="50" cy="60" rx="32" ry="20" fill="#F2D9A0" ${OL}/>
+      <path d="M34 54 L46 62 M50 50 L62 58" fill="none" stroke="#C6362F" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M62 28 L78 40" ${OL} fill="none"/><circle cx="80" cy="42" r="4" fill="#C6362F" ${OL}/>`;
+    case 7: // 窯
+      return `<rect x="18" y="34" width="64" height="48" rx="10" fill="#B8895A" ${OL}/>
+      <rect x="28" y="44" width="44" height="28" rx="8" fill="#5A3A22" ${OL}/>
+      <path d="M38 62 Q44 52 50 62 Q56 52 62 62" fill="none" stroke="#E8B93E" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="50" cy="26" r="3" fill="#C6362F"/>`;
+    case 8: // 焼き上がり（ピール）
+      return `<ellipse cx="52" cy="52" rx="26" ry="17" transform="rotate(-14 52 52)" fill="#DFA24E" ${OL}/>
+      <path d="M40 50 L50 46 M56 56 L66 52" fill="none" stroke="#FFF3D9" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 70 L8 86" ${OL} fill="none"/>
+      <path d="M26 62 L42 78 L30 84 L18 74 Z" fill="#DCC49A" ${OL}/>`;
+    case 9: // 手渡し（袋）
+      return `<path d="M32 44 L68 44 L74 82 L26 82 Z" fill="#FBF2DF" ${OL}/>
+      <path d="M40 44 Q40 30 50 30 Q60 30 60 44" fill="none" ${OL}/>
+      <ellipse cx="50" cy="58" rx="14" ry="9" fill="#E8B04B" ${OL}/>
+      <path d="M14 74 Q22 68 28 74" fill="none" ${OL}/>`;
+  }
+  return '';
+}
+let uid=0;
+function coin(n,size){
+  uid++;
+  return `<svg class="coin" viewBox="0 0 170 170" width="${size}" height="${size}" role="img" aria-label="工程${n} ${STAGE[n]?STAGE[n].name:''}">
+    <circle cx="85" cy="85" r="83" fill="#C6362F"/>
+    <circle cx="85" cy="85" r="76" fill="#E8B93E"/>
+    <circle cx="85" cy="85" r="70" fill="none" stroke="#C99A25" stroke-width="2" stroke-dasharray="3 4"/>
+    <text x="85" y="40" text-anchor="middle" font-family="'Dela Gothic One',sans-serif" font-size="24" fill="#1E2A63">${n}</text>
+    <g transform="translate(85,98) scale(1.05) translate(-50,-58)">${stageArt(n)}</g>
+    <path id="arc${uid}" d="M 30 110 A 60 60 0 0 0 140 110" fill="none"/>
+    <text font-size="11" fill="#C6362F" font-weight="bold" letter-spacing="3">
+      <textPath href="#arc${uid}" startOffset="50%" text-anchor="middle">ぱんうらない</textPath>
+    </text>
+  </svg>`;
+}
+function miniCoin(n){
+  return `<svg viewBox="0 0 120 120" role="img" aria-label="${MONTH[n].n}">
+    <circle cx="60" cy="60" r="58" fill="#C6362F"/><circle cx="60" cy="60" r="52" fill="#E8B93E"/>
+    <g transform="translate(60,62) scale(0.86) translate(-50,-58)">${stageArt(n)}</g></svg>`;
+}
+
+// ---- 年の選択肢 ----
+const NOW=new Date(), THIS_Y=NOW.getFullYear(), THIS_M=NOW.getMonth()+1;
+for(let y=THIS_Y-1;y<=THIS_Y+2;y++){
+  const o=new Option(y+"年",y); $("targetYear").add(o);
+}
+$("targetYear").value=THIS_Y;
+
+function render(){
+  const y=$("year").value.trim(), m=$("month").value.trim(), d=$("day").value.trim();
+  const ty=+$("targetYear").value;
+  const ok = y.length===4 && +m>=1 && +m<=12 && +d>=1 && +d<=31;
+  const box=$("result");
+  if(!ok){
+    box.innerHTML='<div class="empty">生年月日を入れたら、今年があなたにとって「パンのどの工程の年か」を鑑定するで。</div>';
+    document.getElementById('out').classList.remove('anim');
+    return;
+  }
+  const py = red9(dsum(m)+dsum(d)+dsum(ty));
+  const S = STAGE[py];
+  const pm = red9(py + THIS_M);
+
+  let flow='<div class="flow">';
+  for(let i=1;i<=9;i++){
+    const cls = i===py?'on':(i<py?'done':'');
+    flow += '<div class="fl '+cls+'"><i></i>'+STAGE[i].name+'</div>';
+  }
+  flow+='</div>';
+
+  box.innerHTML =
+    '<div class="headCard">'+
+      '<div class="yearLabel">'+ty+'年の あなたは</div>'+
+      '<div class="coinWrap">'+coin(py,190)+'</div>'+
+      '<div class="stageNo">'+S.no+'</div>'+
+      '<div class="stageName">'+S.name+'</div>'+
+      '<div class="stageCatch">'+S.catch+'</div>'+
+      '<p class="stageMsg">'+S.msg+'</p>'+
+      flow+
+    '</div>'+
+
+    '<div class="sect-h">今年やるとええこと <em>やること</em></div>'+
+    '<div class="block"><div class="blockT">'+ty+'年の動き方</div><ul>'+
+      S.do.map(t=>'<li>'+t+'</li>').join('')+'</ul></div>'+
+    '<div class="block"><div class="blockT ng">これは、やらんでええ</div><ul>'+
+      S.ng.map(t=>'<li class="ng">'+t+'</li>').join('')+'</ul></div>'+
+
+    '<div class="sect-h">今月の動き <em>こんげつ</em></div>'+
+    '<div class="monthBox">'+
+      '<div class="monthTop">'+miniCoin(pm)+
+        '<div><div class="monthNo">'+THIS_M+'月 ／ ナンバー'+pm+'</div>'+
+        '<div class="monthName">'+MONTH[pm].n+'</div></div>'+
+      '</div>'+
+      '<div class="monthMsg">'+MONTH[pm].m+'</div>'+
+      '<div class="monthSel"><label for="msel">他の月も見る</label>'+
+        '<select id="msel">'+Array.from({length:12},(_,i)=>
+          '<option value="'+(i+1)+'"'+((i+1)===THIS_M?' selected':'')+'>'+(i+1)+'月</option>').join('')+
+        '</select></div>'+
+    '</div>'+
+    '<p class="shiran">ほんま、しらんけど。</p>';
+
+  document.getElementById('out').classList.add('anim');
+
+  document.getElementById('msel').addEventListener('change',e=>{
+    const mm=+e.target.value, p=red9(py+mm);
+    const box2=e.target.closest('.monthBox');
+    box2.querySelector('.monthTop').innerHTML=miniCoin(p)+
+      '<div><div class="monthNo">'+mm+'月 ／ ナンバー'+p+'</div>'+
+      '<div class="monthName">'+MONTH[p].n+'</div></div>';
+    box2.querySelector('.monthMsg').textContent=MONTH[p].m;
+  });
+}
+
+["year","month","day"].forEach(id=>{
+  $(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"");render();});
+});
+$("targetYear").addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
