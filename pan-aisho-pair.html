@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF3E2">
+<title>パンde相性占い 二枚がさね | Mo.33</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E2;--kinari:#FFFAEE;--paper:#FFF4DA;
+    --gold:#E8B93E;--gold-deep:#C99A25;
+    --navy:#1E2A63;--aka:#C6362F;--cha:#4A2F1F;--midori:#5B8C3E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Zen Maru Gothic',-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    background-color:var(--cream);
+    background-image:radial-gradient(rgba(201,154,37,.14) 1.5px,transparent 1.6px);
+    background-size:22px 22px;
+    color:var(--cha);line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 80px}
+  .hero{text-align:center;padding:34px 0 18px}
+  .brand{font-size:12px;letter-spacing:.35em;color:var(--aka);font-weight:700;padding-left:.35em}
+  .mark{font-family:'Dela Gothic One',sans-serif;font-size:34px;line-height:1.3;color:var(--navy);margin:6px 0 4px}
+  .mark .aka{color:var(--aka)}
+  .sub{font-size:13.5px}
+  .rule{width:64px;height:3px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+  .card{background:var(--kinari);border:3px solid var(--aka);border-radius:18px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:20px;margin-top:16px}
+  .eyebrow{font-family:'Dela Gothic One',sans-serif;font-size:12px;letter-spacing:.2em;color:var(--aka);
+    display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .eyebrow span{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:15px;color:var(--navy)}
+  .dob{display:flex;align-items:flex-end;gap:8px}
+  .dob .u{flex:1}
+  .dob label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-align:center}
+  .dob .g{padding-bottom:12px;color:var(--gold-deep);font-weight:700}
+  input{width:100%;font-family:inherit;font-size:17px;font-weight:700;color:var(--navy);
+    background:#fff;border:2px solid var(--gold-deep);border-radius:12px;padding:11px 12px;text-align:center}
+  input:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+  .who{display:flex;gap:8px;flex-wrap:wrap}
+  .who button{flex:1;min-width:88px;font-family:inherit;font-size:13.5px;font-weight:700;
+    color:var(--navy);background:#fff;border:2px solid var(--gold-deep);border-radius:999px;padding:9px 4px;cursor:pointer}
+  .who button[aria-pressed="true"]{background:var(--aka);border-color:var(--aka);color:#fff}
+  .who button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+
+  .sect-h{display:flex;align-items:center;gap:10px;font-family:'Dela Gothic One',sans-serif;
+    font-size:17px;color:var(--navy);margin:32px 4px 14px}
+  .sect-h::after{content:"";flex:1;height:2px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 14px)}
+  .sect-h em{font-style:normal;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:12px;color:var(--aka);letter-spacing:.18em}
+
+  .headCard{background:var(--kinari);border:3px solid var(--aka);border-radius:20px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:22px 16px 20px;text-align:center}
+  .pair{display:flex;align-items:flex-start;justify-content:center;gap:4px}
+  .pp{flex:1;max-width:180px}
+  .pp svg{width:118px;height:118px}
+  .anim .pp svg{animation:pop .55s ease both}
+  .anim .pp:last-child svg{animation-delay:.15s}
+  @keyframes pop{from{opacity:0;transform:scale(.6) rotate(-25deg)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.anim .pp svg{animation:none}}
+  .pp .nm{font-size:11.5px;font-weight:700;color:var(--navy);letter-spacing:.06em;margin-top:2px}
+  .pp .bn{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--aka);margin-top:2px;line-height:1.4}
+  .pp .kw{font-size:11px;color:var(--cha);margin-top:2px;line-height:1.5}
+  .times{font-family:'Dela Gothic One',sans-serif;font-size:30px;color:var(--gold-deep);padding-top:44px;flex:0 0 auto}
+
+  .typeTag{display:inline-block;font-family:'Dela Gothic One',sans-serif;font-size:14px;color:#fff;
+    background:var(--navy);border-radius:999px;padding:6px 18px;margin-top:14px;letter-spacing:.05em}
+  .typeMsg{font-size:14px;margin:12px auto 0;max-width:430px;text-align:left}
+  .axis{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .ax{font-size:11px;font-weight:700;color:var(--cha);background:var(--paper);
+    border:2px solid var(--gold-deep);border-radius:999px;padding:3px 12px}
+
+  .pblock{border-radius:16px;padding:15px 16px 14px;margin-bottom:12px;border:2px solid var(--gold-deep);background:var(--kinari)}
+  .pblock.good{border-color:var(--midori);background:#F5FAEE}
+  .pblock.bad{border-color:var(--aka);background:#FDF0EB}
+  .pblock.fix{border-color:var(--gold-deep);background:var(--paper)}
+  .pt{font-family:'Dela Gothic One',sans-serif;font-size:16px;display:flex;align-items:center;gap:9px;margin-bottom:9px;line-height:1.4}
+  .pt .ic{font-size:20px}
+  .good .pt{color:var(--midori)} .bad .pt{color:var(--aka)} .fix .pt{color:var(--navy)}
+  .ptxt{font-size:13.5px}
+  .ptxt b{color:var(--aka)}
+  .tip{font-size:12.5px;margin-top:9px;padding-top:9px;border-top:2px dashed rgba(201,154,37,.6)}
+  .tip b{color:var(--aka)}
+
+  .empty{font-size:13px;color:#8a6f4f;background:var(--paper);border:2px dashed var(--gold-deep);
+    border-radius:13px;padding:18px;text-align:center;line-height:1.9}
+  .shiran{text-align:center;font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.1em;margin-top:16px}
+  .foot{text-align:center;margin-top:36px;font-size:11.5px;line-height:1.9}
+  .foot .b{font-family:'Dela Gothic One',sans-serif;color:var(--navy);letter-spacing:.15em}
+  .foot .yawaraka{color:var(--aka);font-weight:700}
+  @media (prefers-reduced-motion:no-preference){.anim .pblock,.anim .headCard{animation:rise .5s ease both}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="brand">Mo.33</div>
+    <div class="mark">パン<span class="aka">de</span>相性占い</div>
+    <div class="sub">二枚がさね版 ／ 何パンと何パンで見る、正直どないなん占い</div>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <div class="eyebrow">01 &nbsp;<span>あなたのお誕生日</span></div>
+    <div class="dob">
+      <div class="u"><label>年</label><input id="y1" inputmode="numeric" maxlength="4" placeholder="1990"></div>
+      <div class="g">/</div><div class="u"><label>月</label><input id="m1" inputmode="numeric" maxlength="2" placeholder="4"></div>
+      <div class="g">/</div><div class="u"><label>日</label><input id="d1" inputmode="numeric" maxlength="2" placeholder="15"></div>
+    </div>
+    <div class="eyebrow" style="margin-top:20px">02 &nbsp;<span>お相手のお誕生日</span></div>
+    <div class="dob">
+      <div class="u"><label>年</label><input id="y2" inputmode="numeric" maxlength="4" placeholder="1988"></div>
+      <div class="g">/</div><div class="u"><label>月</label><input id="m2" inputmode="numeric" maxlength="2" placeholder="9"></div>
+      <div class="g">/</div><div class="u"><label>日</label><input id="d2" inputmode="numeric" maxlength="2" placeholder="3"></div>
+    </div>
+    <div class="eyebrow" style="margin-top:20px">03 &nbsp;<span>どんな相手？</span></div>
+    <div class="who" id="who">
+      <button type="button" data-k="ki" aria-pressed="true">気になる人</button>
+      <button type="button" data-k="koi" aria-pressed="false">恋人</button>
+      <button type="button" data-k="kazoku" aria-pressed="false">家族</button>
+      <button type="button" data-k="tomo" aria-pressed="false">友だち</button>
+      <button type="button" data-k="shigoto" aria-pressed="false">仕事仲間</button>
+    </div>
+  </section>
+
+  <div id="out">
+    <div class="sect-h">二枚がさね <em>あいしょう</em></div>
+    <div id="result"><div class="empty">ふたりの生年月日を入れたら、何パンと何パンの組み合わせか、正直に鑑定するで。</div></div>
+  </div>
+
+  <div class="foot">
+    ぱん屋だけどパンが作れないぱん屋が、ぱん占い始めました。<br>
+    ふたりのあいだが、<span class="yawaraka">ええ感じにふくらみます</span>ように。<br>
+    <span class="b">Pan uranai ／ Mo.33</span>　@sakamoto_no_mo
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const dsum=s=>String(s).split('').reduce((a,c)=>a+(+c||0),0);
+const MASTERS=[11,22,33];
+function red(n){while(n>9&&!MASTERS.includes(n))n=dsum(n);return n;}
+function lifePath(y,m,d){return red(dsum(''+y+m+d));}
+
+// ---- 各パンの性質 ----
+// jiku: 自分軸/他人軸　tempo: 早/遅/波　netsu: 発散/内向
+const P={
+1:{b:"シンプル塩ぱん",kw:"先頭に立つ",jiku:"自",tempo:"早",netsu:"発",
+  g:"ぐいぐい先を引っぱって道をつくる",
+  x:"よう考えんと押し切ってまう",
+  f:"先に一言「ごめん」を言うてまうこと。勝ち負けやなく、早さで勝ちに行き"},
+2:{b:"ふんわりメロンパン",kw:"気ぃつかい",jiku:"他",tempo:"遅",netsu:"内",
+  g:"相手の機嫌をちゃんと察して支えてくれる",
+  x:"言いたいこと飲み込んで、あとで溜め込む",
+  f:"我慢したことを、ちいさい声でええから口に出すこと。黙ってたら伝わらへんで"},
+3:{b:"アンパンマンぱん",kw:"楽しませ役",jiku:"自",tempo:"早",netsu:"発",
+  g:"場をパッと明るくして、しんどい空気を笑いに変える",
+  x:"大事な話まで茶化して流してまう",
+  f:"いっぺんだけ真顔で話すこと。ふざけんのは、そのあとで"},
+4:{b:"四角いスコーン",kw:"きっちり屋",jiku:"自",tempo:"遅",netsu:"内",
+  g:"約束と段取りをきっちり守って、土台をつくる",
+  x:"正しさで相手を測って、細かいとこを責めてまう",
+  f:"正論をいったん置くこと。正しさより、相手の機嫌を先に取りにいき"},
+5:{b:"流行のマリトッツォ",kw:"自由人",jiku:"自",tempo:"早",netsu:"発",
+  g:"あちこち連れ出して、毎回ちがう景色を見せてくれる",
+  x:"飽きたら急に連絡が減って、ふらっとどっか行く",
+  f:"その日のうちに軽く連絡すること。重い話にせんと「メシ行こ」でええ"},
+6:{b:"ハイジの白パン",kw:"世話焼き",jiku:"他",tempo:"波",netsu:"発",
+  g:"甲斐甲斐しく世話を焼いて、相手をちゃんと守る",
+  x:"「あんたのため」が出て、だんだん重たなる",
+  f:"やってあげることを減らすこと。信じて任せるんが、いちばんのやさしさや"},
+7:{b:"こだわりクロワッサン",kw:"一人時間",jiku:"自",tempo:"遅",netsu:"内",
+  g:"ベタベタせんでも成立する、ちょうどええ距離を保つ",
+  x:"黙って心のシャッター閉めて、そのまま何日も開けへん",
+  f:"面と向かって言えへんなら、文章で渡すこと。LINEでも手紙でもええ"},
+8:{b:"黒カレーパン",kw:"白黒つける",jiku:"自",tempo:"早",netsu:"発",
+  g:"物事をどんどん決めて、結果まで持っていく",
+  x:"言い方がキツなって、勝ち負けの話にすり替える",
+  f:"言葉より行動やで。黙って美味いもん買うて帰ったら、だいたい丸くおさまる"},
+9:{b:"王道バゲット",kw:"包みこむ",jiku:"他",tempo:"遅",netsu:"内",
+  g:"どんな相手も丸ごと受けとめて、場を丸くする",
+  x:"我慢していい人でおって、ある日ふっと「もうええわ」になる",
+  f:"察するのをやめて、はっきり言葉にすること。「ほんまはこうしてほしかった」の一言や"},
+11:{b:"クセ強い食パン",kw:"直感の人",jiku:"他",tempo:"波",netsu:"内",
+  g:"言わんでも察して、しんどい時にすっと隣におる",
+  x:"勘で決めつけて、勝手に傷ついてまう",
+  f:"勘やなく口で確認すること。「今こう思ってるやろ」を「今どう思ってる？」に変えるだけや"},
+22:{b:"バラエティサンド",kw:"形にする",jiku:"自",tempo:"遅",netsu:"発",
+  g:"でっかい計画を立てて、ほんまに形にしてまう",
+  x:"一人で背負い込んで、しんどいのを言わんまま黙る",
+  f:"役割の話やなく、気持ちの話をすること。「今しんどい」から始めてみ"},
+33:{b:"カレーメロンパン",kw:"与える人",jiku:"他",tempo:"波",netsu:"発",
+  g:"見返りなしで与えて、相手を丸ごと肯定する",
+  x:"与えすぎて空っぽになって、そのくせ助けてと言えへん",
+  f:"言葉は要らん。黙って隣に座って、同じもん食べるんが、いちばん効く"}
+};
+
+// ---- 組み合わせの型 ----
+function typeOf(a,b){
+  const A=P[a],B=P[b];
+  if(a===b) return {tag:"おんなじ生地どうし",
+    msg:"鏡みたいな二人や。気持ちはよう分かる、話も早い。そのかわり弱点までいっしょやから、片方がコケたらもう片方も一緒にコケるで。誰か外の人を一人はさんどくと、だいぶ安定する。",
+    good:"似た者どうしやから、説明せんでも通じる。ええ時はほんまに気楽や。",
+    bad:"欠点がおんなじ方向やから、二人まとめて同じ穴に落ちる。",
+    fix:"どっちが折れるか揉めるより、じゃんけんで決めるくらいでちょうどええ。"};
+  const j=A.jiku+B.jiku;
+  if(j==="自自") return {tag:"引っぱり合い型",
+    msg:"二人とも自分の軸がはっきりしてる組み合わせ。方向が揃うてる時はめちゃくちゃ強いけど、ズレた瞬間に真正面からぶつかるで。どっちがハンドル握るか、先に決めとくのが吉や。",
+    good:"目的がひとつに揃うたら、進むスピードは12組合せでも一等賞や。",
+    bad:"どっちも譲らん。しょーもないことで一週間口きかんくなるパターンあるで。",
+    fix:"話し合いは向かい合わせやなく、並んで座ってやり。散歩か車の中がおすすめや。"};
+  if(j==="他他") return {tag:"譲り合い型",
+    msg:"二人とも相手を立てるタイプ。居心地はほんまにええけど、どっちも決めへんから話が前に進まん。やさしさが行きすぎて、本音が出えへんまま何年も、いうことがあるで。",
+    good:"お互い気ぃつかえるから、しんどい時期をいっしょに越えるんがめちゃくちゃ上手い。",
+    bad:"言わんまま溜まって、ある日いっぺんに冷める。ケンカせんかったのに終わるのが怖いとこ。",
+    fix:"月にいっぺん「最近ちょっと嫌やったこと」を一個ずつ言い合う日をつくり。"};
+  return {tag:"引っぱる×支える型",
+    msg:"片方が前を引っぱって、もう片方が支える組み合わせ。噛み合うたら理想的なコンビや。ただし、支える側の我慢が当たり前になった時が分かれ道やで。",
+    good:"役割が自然に分かれてるから、無理なく回る。長続きしやすい組み合わせや。",
+    bad:"引っぱる側が急ぎすぎて、支える側が黙って我慢しだした時。表面は平和やけど中で腐るで。",
+    fix:"支えてもらってる側が、先に「ありがとう」を言うこと。それだけでだいぶ変わる。"};
+}
+function axisNotes(a,b){
+  const A=P[a],B=P[b],out=[];
+  if(A.tempo!==B.tempo && (A.tempo==="早"&&B.tempo==="遅" || A.tempo==="遅"&&B.tempo==="早"))
+    out.push("ペースがちがう");
+  else out.push("ペースは近い");
+  if(A.netsu!==B.netsu) out.push("温度差あり");
+  else out.push(A.netsu==="発"?"どっちも熱い":"どっちも静か");
+  out.push(A.jiku===B.jiku?(A.jiku==="自"?"どっちも自分軸":"どっちも他人軸"):"軸ちがい");
+  return out;
+}
+
+const WHO={
+ ki:{label:"気になる人",
+  good:"気になる段階でこの形が出てる時は、まあまあ脈ありや。相手の返事に質問がくっついてくる、同じ話題が3回続く、「今度」やなく「来週」で誘われる——このうち2つ出てたら、そのまま行ってええで。",
+  bad:"止まる時は、たいてい追いかけすぎた時や。既読の間隔を数えだしたり、SNSの更新をチェックしだしたら、それはもう相手やなく自分の不安を見てる。その空気は、だいたい相手にバレるで。",
+  fix:"この段階の仲直りは、謝ることより「間を空けんこと」や。気まずいまま一週間ほっといたら、それだけで自然消滅する。次の日に軽い話題で一通、それでじゅうぶん立て直せるで。"},
+ koi:{label:"恋人",
+  good:"恋人としては、なんもない平日がちゃんと心地ええ時がいちばんええ状態や。特別なイベントより、一緒にメシ食うて、しょーもない話して、それで満ちてる。その日常が回ってる限り、この二人は強いで。",
+  bad:"あぶないのは、相手がおるのが当たり前になった時や。「言わんでも分かるやろ」が増えて、ありがとうを言わんくなる。ケンカより、無関心のほうがこの二人にはよう効く毒やで。",
+  fix:"その日のうちに、ちょっとでも声かけること。寝る前まで持ち越したら倍こじれるタイプの二人や。あと週にいっぺんは二人だけの時間を確保しとき。放置した期間のぶんだけ気持ちは冷めるで。"},
+ kazoku:{label:"家族",
+  good:"家族としては、なんも言わんでも家の中が回ってる時や。誰がなにをやるか自然に決まってて、しんどい時期はちゃんと支え合える。当たり前すぎて気づかんけど、それが上出来の状態やで。",
+  bad:"距離が近すぎて、言わんでええことまで言う時や。しかも家族は昔の話を持ち出せてまうから、10年前のことで今日ケンカできる。逃げ場がないぶん、こじれると長引くで。",
+  fix:"家族の仲直りは、相手を変えようとせんことから始まる。「そういう人やねん」で置いとくほうが、結局うまいこといく。あと、家族にこそ他人行儀な「ありがとう」を言うたって。効き目えぐいで。"},
+ tomo:{label:"友だち",
+  good:"友だちとしては、会わん期間があっても平気な時がええ状態や。半年ぶりでも3分で元通り、貸し借りの計算もせん。この軽さが保ててる間は、いちばん長続きする関係やで。",
+  bad:"どっちかが忙しい時期に、そのままフェードアウトしていく時や。あと、金の貸し借りとSNSの見え方。この二つが絡んだ瞬間、友だち関係はいちばん脆なるで。",
+  fix:"理由の説明は要らん。「久しぶり、メシ行こ」の一通でリセットできるんが友だちの特権や。気まずさは、会うたら5分で消える。連絡した側が偉い、それだけの話やで。"},
+ shigoto:{label:"仕事仲間",
+  good:"仕事なら、役割がはっきり分かれてる時がいちばん機能する。どっちが決めて、どっちが回すかが決まってたら、この二人の成果はしっかり出るで。仲がええかどうかは、正直あんまり関係ない。",
+  bad:"責任の押し付け合いが始まった時や。あと、仕事の話に私情が混ざりだしたら黄色信号。「あの人がこう言うたから」が増えてきたら、もう中身やなく感情で回っとるで。",
+  fix:"仕事の仲直りは、気持ちやなく段取りでやること。誰がいつまでに何をやるか、それを書いて共有したら7割は片づく。謝るより、次の一手を先に出すほうがこの関係には効くで。"}
+};
+
+// ---- ぱんイラスト ----
+const OL='stroke="#1E2A63" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+let uid=0;
+function breadArt(n){
+  switch(n){
+    case 1:return `<path d="M16 55 Q19 37 50 34 Q81 37 84 55 Q81 73 50 76 Q19 73 16 55 Z" fill="#E8B04B" ${OL}/>
+      <path d="M38 38 Q31 55 38 72" fill="none" ${OL}/><path d="M50 35 Q44 55 50 75" fill="none" ${OL}/>
+      <path d="M62 38 Q57 55 62 72" fill="none" ${OL}/>
+      <circle cx="30" cy="48" r="1.8" fill="#fff"/><circle cx="72" cy="50" r="1.8" fill="#fff"/>`;
+    case 2:{uid++;return `<clipPath id="c${uid}"><circle cx="50" cy="55" r="27"/></clipPath>
+      <circle cx="50" cy="55" r="27" fill="#F3D077" ${OL}/>
+      <g clip-path="url(#c${uid})" ${OL} fill="none"><path d="M20 40 L80 66"/><path d="M20 58 L80 84"/><path d="M20 22 L80 48"/>
+      <path d="M80 40 L20 66"/><path d="M80 58 L20 84"/><path d="M80 22 L20 48"/></g>
+      <circle cx="50" cy="55" r="27" fill="none" ${OL}/>`;}
+    case 3:return `<circle cx="50" cy="55" r="27" fill="#E8A34B" ${OL}/>
+      <circle cx="50" cy="58" r="8" fill="#D5643B" ${OL}/><circle cx="31" cy="60" r="6.5" fill="#D5643B" ${OL}/>
+      <circle cx="69" cy="60" r="6.5" fill="#D5643B" ${OL}/>
+      <circle cx="40" cy="47" r="2.4" fill="#1E2A63"/><circle cx="60" cy="47" r="2.4" fill="#1E2A63"/>
+      <path d="M44 70 Q50 74 56 70" fill="none" ${OL}/>`;
+    case 4:return `<rect x="23" y="32" width="54" height="46" rx="10" fill="#DFAF63" ${OL}/>
+      <path d="M23 48 Q50 42 77 48" fill="none" ${OL}/>
+      <circle cx="38" cy="62" r="1.8" fill="#8A5A2B"/><circle cx="52" cy="68" r="1.8" fill="#8A5A2B"/>
+      <circle cx="63" cy="58" r="1.8" fill="#8A5A2B"/>`;
+    case 5:return `<circle cx="50" cy="55" r="27" fill="#C98A46" ${OL}/>
+      <path d="M23 55 Q34 44 50 44 Q66 44 77 55 Q66 66 50 66 Q34 66 23 55 Z" fill="#FFF9EC" ${OL}/>
+      <circle cx="38" cy="52" r="4" fill="#FFF9EC" ${OL}/><circle cx="50" cy="50" r="4.5" fill="#FFF9EC" ${OL}/>
+      <circle cx="62" cy="52" r="4" fill="#FFF9EC" ${OL}/>`;
+    case 6:return `<circle cx="50" cy="55" r="27" fill="#FBF2DF" ${OL}/>
+      <path d="M50 36 Q45 55 50 74" fill="none" ${OL}/>
+      <ellipse cx="36" cy="66" rx="6" ry="3.5" fill="#F0D9A8"/><ellipse cx="64" cy="66" rx="6" ry="3.5" fill="#F0D9A8"/>`;
+    case 7:return `<ellipse cx="29" cy="61" rx="12" ry="15" transform="rotate(-32 29 61)" fill="#DFA24E" ${OL}/>
+      <ellipse cx="71" cy="61" rx="12" ry="15" transform="rotate(32 71 61)" fill="#DFA24E" ${OL}/>
+      <ellipse cx="50" cy="52" rx="17" ry="21" fill="#E8B45C" ${OL}/>
+      <path d="M38 44 Q34 52 37 62" fill="none" ${OL}/><path d="M62 44 Q66 52 63 62" fill="none" ${OL}/>`;
+    case 8:return `<ellipse cx="50" cy="55" rx="33" ry="21" fill="#8A5A2B" ${OL}/>
+      <circle cx="35" cy="50" r="1.7" fill="#E8C989"/><circle cx="46" cy="62" r="1.7" fill="#E8C989"/>
+      <circle cx="58" cy="48" r="1.7" fill="#E8C989"/><circle cx="66" cy="58" r="1.7" fill="#E8C989"/>`;
+    case 9:return `<ellipse cx="50" cy="55" rx="36" ry="13" transform="rotate(-22 50 55)" fill="#E0A45C" ${OL}/>
+      <ellipse cx="36" cy="59" rx="2.5" ry="6" transform="rotate(-60 36 59)" fill="#FFF3D9" ${OL}/>
+      <ellipse cx="50" cy="54" rx="2.5" ry="6" transform="rotate(-60 50 54)" fill="#FFF3D9" ${OL}/>
+      <ellipse cx="64" cy="49" rx="2.5" ry="6" transform="rotate(-60 64 49)" fill="#FFF3D9" ${OL}/>`;
+    case 11:return `<path d="M27 78 L27 47 Q27 33 39 33 Q43 26 50 28 Q57 26 61 33 Q73 33 73 47 L73 78 Z" fill="#F2D9A0" ${OL}/>
+      <path d="M35 72 L35 50 Q35 42 42 41 Q46 37 50 38 Q54 37 58 41 Q65 42 65 50 L65 72 Z" fill="none" stroke="#C99A25" stroke-width="2.5"/>`;
+    case 22:return `<path d="M20 76 L50 26 L80 76 Z" fill="#FBF2DF" ${OL}/>
+      <path d="M28 68 Q36 64 44 68 Q52 64 60 68 Q66 64 72 68" fill="none" stroke="#5B8C3E" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M32 73 L68 73" stroke="#C6362F" stroke-width="3.5" stroke-linecap="round"/>`;
+    case 33:{uid++;return `<clipPath id="c${uid}"><circle cx="50" cy="55" r="27"/></clipPath>
+      <circle cx="50" cy="55" r="27" fill="#C98A3F" ${OL}/>
+      <g clip-path="url(#c${uid})" ${OL} fill="none"><path d="M20 40 L80 66"/><path d="M20 58 L80 84"/><path d="M20 22 L80 48"/>
+      <path d="M80 40 L20 66"/><path d="M80 58 L20 84"/><path d="M80 22 L20 48"/></g>
+      <circle cx="50" cy="55" r="27" fill="none" ${OL}/>
+      <circle cx="42" cy="48" r="1.7" fill="#8A3B22"/><circle cx="60" cy="60" r="1.7" fill="#8A3B22"/>`;}
+  }
+  return '';
+}
+function coin(n,size){
+  uid++;
+  return `<svg viewBox="0 0 170 170" width="${size}" height="${size}" role="img" aria-label="${P[n].b}">
+    <circle cx="85" cy="85" r="83" fill="#C6362F"/><circle cx="85" cy="85" r="76" fill="#E8B93E"/>
+    <circle cx="85" cy="85" r="70" fill="none" stroke="#C99A25" stroke-width="2" stroke-dasharray="3 4"/>
+    <text x="85" y="40" text-anchor="middle" font-family="'Dela Gothic One',sans-serif" font-size="24" fill="#1E2A63">${n}</text>
+    <g transform="translate(85,98) scale(1.05) translate(-50,-55)">${breadArt(n)}</g>
+    <path id="a${uid}" d="M 30 110 A 60 60 0 0 0 140 110" fill="none"/>
+    <text font-size="11" fill="#C6362F" font-weight="bold" letter-spacing="3">
+      <textPath href="#a${uid}" startOffset="50%" text-anchor="middle">ぱんうらない</textPath></text></svg>`;
+}
+
+let whoKey="ki";
+document.querySelectorAll('#who button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#who button').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true'); whoKey=b.dataset.k; render();
+  });
+});
+function ok(y,m,d){return y.length===4&&+m>=1&&+m<=12&&+d>=1&&+d<=31;}
+
+function render(){
+  const y1=$("y1").value.trim(),m1=$("m1").value.trim(),d1=$("d1").value.trim();
+  const y2=$("y2").value.trim(),m2=$("m2").value.trim(),d2=$("d2").value.trim();
+  const box=$("result");
+  if(!(ok(y1,m1,d1)&&ok(y2,m2,d2))){
+    box.innerHTML='<div class="empty">ふたりの生年月日を入れたら、何パンと何パンの組み合わせか、正直に鑑定するで。</div>';
+    $("out").classList.remove('anim'); return;
+  }
+  const a=lifePath(y1,m1,d1), b=lifePath(y2,m2,d2);
+  const A=P[a], B=P[b], T=typeOf(a,b), W=WHO[whoKey];
+  const ax=axisNotes(a,b);
+
+  const good = `<b>${A.b}</b>のあなたが${A.g}、<b>${B.b}</b>のあの人が${B.g}。この形になってる時が、二人のいちばんええ焼き上がりや。${T.good}<br><br>${W.good}`;
+  const bad  = (a===b)
+    ? `こじれる時はたいてい、二人とも${A.x}時や。おんなじクセやから、止めてくれる人がおらん。${T.bad}`
+    : `こじれる時はたいてい、<b>${A.b}</b>のあなたが${A.x}、<b>${B.b}</b>のあの人が${B.x}時や。${T.bad}`;
+  const badFull = bad + `<br><br>${W.bad}`;
+  const fix  = (a===b)
+    ? `二人とも同じや。${A.f}。${T.fix}`
+    : `<b>${A.b}</b>のあなたは、${A.f}。<b>${B.b}</b>のあの人には、${B.f}——そういうやり方が効くタイプやと思とき。${T.fix}`;
+  const fixFull = fix + `<br><br>${W.fix}`;
+
+  box.innerHTML=
+   '<div class="headCard">'+
+     '<div class="pair">'+
+       '<div class="pp">'+coin(a,118)+'<div class="nm">あなた</div><div class="bn">'+A.b+'</div><div class="kw">'+A.kw+'</div></div>'+
+       '<div class="times">×</div>'+
+       '<div class="pp">'+coin(b,118)+'<div class="nm">お相手</div><div class="bn">'+B.b+'</div><div class="kw">'+B.kw+'</div></div>'+
+     '</div>'+
+     '<div class="typeTag">'+T.tag+'</div>'+
+     '<p class="typeMsg">'+T.msg+'</p>'+
+     '<div class="axis">'+ax.map(t=>'<span class="ax">'+t+'</span>').join('')+'</div>'+
+   '</div>'+
+   '<div class="sect-h">正直どないなん <em>'+W.label+'編</em></div>'+
+   '<div class="pblock good"><div class="pt"><span class="ic">🥐</span>パンがイキイキ美味しい時</div><div class="ptxt">'+good+'</div></div>'+
+   '<div class="pblock bad"><div class="pt"><span class="ic">💥</span>食べたら腹壊す時</div><div class="ptxt">'+badFull+'</div></div>'+
+   '<div class="pblock fix"><div class="pt"><span class="ic">🤝</span>仲直りの秘訣</div><div class="ptxt">'+fixFull+'</div></div>'+
+   '<p class="shiran">ほんま、しらんけど。</p>';
+  $("out").classList.add('anim');
+}
+["y1","m1","d1","y2","m2","d2"].forEach(id=>{
+  $(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"");render();});
+});
+render();
+</script>
+</body>
+</html>
