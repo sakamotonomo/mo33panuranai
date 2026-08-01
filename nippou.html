@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#FAF3E2">
+<title>レジ締め日報 | 鳴門屋製パン 桃谷本店</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E2; --kinari:#FFFAEE; --paper:#FFF4DA;
+    --gold:#E8B93E; --gold-deep:#C99A25;
+    --navy:#1E2A63; --aka:#C6362F; --cha:#4A2F1F;
+    --green:#5B8C3E; --gray:#8a6f4f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Zen Maru Gothic',-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    background-color:var(--cream);
+    background-image:radial-gradient(rgba(201,154,37,.14) 1.5px,transparent 1.6px);
+    background-size:22px 22px;
+    color:var(--cha);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 14px 200px}
+
+  .hero{text-align:center;padding:26px 0 14px}
+  .brand{font-size:12px;letter-spacing:.35em;color:var(--aka);font-weight:700;padding-left:.35em}
+  .mark{font-family:'Dela Gothic One',sans-serif;font-size:26px;line-height:1.35;color:var(--navy);margin:6px 0 4px;letter-spacing:.02em}
+  .mark .aka{color:var(--aka)}
+  .sub{font-size:12.5px;color:var(--cha);letter-spacing:.04em}
+  .rule{width:64px;height:3px;margin:14px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+  /* タブ */
+  .tabbar{position:sticky;top:0;z-index:20;display:flex;gap:6px;background:var(--cream);
+    padding:8px 0;margin-bottom:10px;border-bottom:2px solid var(--gold-deep)}
+  .tabbtn{flex:1;font-family:'Dela Gothic One',sans-serif;font-size:12.5px;letter-spacing:.05em;
+    color:var(--navy);background:var(--kinari);border:2px solid var(--gold-deep);border-radius:12px;
+    padding:10px 4px;cursor:pointer}
+  .tabbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .screen{display:none}
+  .screen.active{display:block}
+
+  .card{background:var(--kinari);border:3px solid var(--aka);border-radius:18px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:18px;margin-top:14px}
+  .eyebrow{font-family:'Dela Gothic One',sans-serif;font-size:12px;letter-spacing:.15em;color:var(--aka);
+    display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .eyebrow span{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.05em;color:var(--navy)}
+
+  .field{margin-bottom:11px}
+  .field label{display:block;font-size:11.5px;font-weight:700;color:var(--cha);margin-bottom:5px}
+  .field .hint{font-weight:500;color:var(--gray);font-size:10.5px;display:block;margin-top:2px}
+  .row2{display:flex;gap:8px}
+  .row2 .field{flex:1}
+  .row3{display:flex;gap:8px}
+  .row3 .field{flex:1}
+  input,select,textarea{
+    width:100%;font-family:inherit;font-size:16px;font-weight:700;color:var(--navy);
+    background:#fff;border:2px solid var(--gold-deep);border-radius:12px;padding:10px 11px;
+    appearance:none;-webkit-appearance:none;
+  }
+  textarea{font-weight:500;resize:vertical;min-height:52px;line-height:1.6}
+  input::placeholder,textarea::placeholder{color:#C9B896;font-weight:500}
+  input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+  input:read-only,.calcbox input{background:var(--paper);color:var(--gray);font-weight:700}
+
+  .weatherRow{display:flex;gap:8px}
+  .weatherBtn{flex:1;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);
+    background:#fff;border:2px solid var(--gold-deep);border-radius:12px;padding:10px 4px;cursor:pointer}
+  .weatherBtn[aria-pressed="true"]{background:var(--aka);border-color:var(--aka);color:#fff}
+
+  .sect-h{display:flex;align-items:center;gap:10px;font-family:'Dela Gothic One',sans-serif;
+    font-size:15.5px;color:var(--navy);letter-spacing:.04em;margin:26px 4px 12px}
+  .sect-h::after{content:"";flex:1;height:2px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 14px)}
+  .sect-h em{font-style:normal;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:11.5px;color:var(--aka);letter-spacing:.15em}
+
+  .calcgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .calcitem{background:var(--paper);border:2px dashed var(--gold-deep);border-radius:12px;padding:9px 10px}
+  .calcitem .l{font-size:10.5px;font-weight:700;color:var(--gray)}
+  .calcitem .v{font-family:'Dela Gothic One',sans-serif;font-size:16px;color:var(--navy);margin-top:2px}
+
+  .btn{font-family:'Dela Gothic One',sans-serif;font-size:14px;letter-spacing:.06em;color:#fff;
+    background:var(--aka);border:none;border-radius:14px;padding:12px;cursor:pointer;
+    box-shadow:0 4px 0 var(--gold-deep);width:100%}
+  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--gold-deep)}
+  .btn.navy{background:var(--navy);box-shadow:0 4px 0 #10173a}
+  .btn.navy:active{box-shadow:0 2px 0 #10173a}
+  .btn.ghost{background:#fff;color:var(--navy);border:2px solid var(--gold-deep);box-shadow:none}
+  .btn.small{padding:9px;font-size:12px}
+  .btnrow{display:flex;gap:8px}
+  .btnrow .btn{flex:1}
+
+  .note{font-size:11px;color:var(--gray);margin-top:10px;line-height:1.7}
+
+  /* 検算バー */
+  .checkbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--kinari);
+    border-top:3px solid var(--aka);box-shadow:0 -4px 14px rgba(0,0,0,.12);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));max-height:46vh;overflow-y:auto}
+  .checkbar .inner{max-width:680px;margin:0 auto}
+  .chiprow{display:flex;gap:6px;margin-bottom:8px}
+  .chip4{flex:1;text-align:center;border-radius:10px;padding:6px 2px;font-size:11px;font-weight:700;border:2px solid}
+  .chip4 .num{font-family:'Dela Gothic One',sans-serif;font-size:13px;display:block}
+  .chip4.ok{background:#EFF6E9;border-color:var(--green);color:var(--green)}
+  .chip4.ng{background:#FDECEA;border-color:var(--aka);color:var(--aka)}
+  .chip4.skip{background:#f3f0e8;border-color:#C9B896;color:var(--gray)}
+  .msglist{margin-bottom:8px}
+  .msg{font-size:12px;font-weight:700;color:var(--aka);background:#FDECEA;border:2px solid var(--aka);
+    border-radius:10px;padding:8px 10px;margin-bottom:6px;line-height:1.6}
+  .msg.good{color:var(--green);background:#EFF6E9;border-color:var(--green)}
+  .checkbar .btnrow{margin-top:6px}
+  .savedFlash{font-size:11px;color:var(--green);font-weight:700;text-align:center;margin-top:6px;min-height:14px}
+
+  /* 一覧 */
+  .tblwrap{overflow-x:auto;border-radius:14px;border:2px solid var(--gold-deep)}
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;font-size:12px;min-width:640px}
+  table.tbl th,table.tbl td{padding:8px 7px;text-align:right;border-bottom:1px solid var(--paper);white-space:nowrap}
+  table.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-align:center}
+  table.tbl td:first-child,table.tbl th:first-child{text-align:center}
+  table.tbl td.l{text-align:left}
+  table.tbl tr.ng td{background:#FDECEA}
+  table.tbl tr.ng td:first-child{color:var(--aka);font-weight:700}
+  table.tbl tr{cursor:pointer}
+  table.tbl tr.foot td{background:var(--paper);font-weight:700}
+  .actcell{white-space:nowrap}
+  .miniBtn{font-size:10.5px;font-weight:700;border-radius:8px;padding:3px 7px;border:2px solid var(--gold-deep);
+    background:#fff;color:var(--navy);cursor:pointer;margin:1px}
+  .miniBtn.del{border-color:var(--aka);color:var(--aka)}
+
+  .monthbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+  .monthbar input{flex:1}
+
+  .empty{font-size:13px;color:var(--gray);line-height:1.8;background:var(--paper);
+    border:2px dashed var(--gold-deep);border-radius:13px;padding:16px;text-align:center}
+
+  /* 分析 */
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .statcard{background:var(--kinari);border:2px solid var(--gold-deep);border-radius:13px;padding:10px 6px;text-align:center}
+  .statcard .h{font-size:11.5px;font-weight:700;color:var(--navy)}
+  .statcard .n{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--aka);margin-top:4px}
+  .statcard .n2{font-size:11px;color:var(--gray);margin-top:2px}
+  .cmpcard{background:#fff;border:2px solid var(--gold-deep);border-radius:13px;padding:12px;margin-bottom:10px}
+  .cmpcard .t{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .cmpcard .r{display:flex;justify-content:space-between;font-size:13px;margin-top:3px}
+  .cmpcard .diffup{color:var(--green);font-weight:700}
+  .cmpcard .diffdown{color:var(--aka);font-weight:700}
+
+  .foot{text-align:center;margin-top:34px;font-size:11px;color:var(--cha);letter-spacing:.05em;line-height:1.9}
+  .foot .b{font-family:'Dela Gothic One',sans-serif;color:var(--navy);letter-spacing:.12em}
+
+  .localNote{font-size:11px;color:var(--gray);background:var(--paper);border:2px dashed var(--gold-deep);
+    border-radius:12px;padding:10px 12px;margin-top:12px;line-height:1.7}
+
+  /* 印刷 */
+  #printArea{display:none}
+  @media print{
+    .wrap, .checkbar{display:none !important}
+    #printArea{display:block;width:100%;padding:6mm}
+    @page{size:A4;margin:10mm}
+  }
+  .pTitle{text-align:center;font-size:16px;font-weight:700;margin-bottom:4px}
+  .pSub{text-align:center;font-size:11px;margin-bottom:10px}
+  .pHead{display:flex;justify-content:space-between;border:1px solid #333;padding:6px 10px;font-size:12px;margin-bottom:8px}
+  .pTbl{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:8px}
+  .pTbl th,.pTbl td{border:1px solid #333;padding:4px 6px}
+  .pTbl th{background:#eee;width:32%;text-align:left}
+  .pTbl td{text-align:right;width:18%}
+  .pSectTitle{font-size:12px;font-weight:700;margin:8px 0 4px}
+  .pNoteBox{border:1px solid #333;padding:6px 8px;font-size:11px;min-height:40px;white-space:pre-wrap;margin-bottom:8px}
+  .pFoot{font-size:10.5px;text-align:right;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="brand">Mo.33</div>
+    <div class="mark">レジ締め<span class="aka">日報</span>ツール</div>
+    <div class="sub">鳴門屋製パン 桃谷本店</div>
+    <div class="rule"></div>
+  </header>
+
+  <nav class="tabbar">
+    <button class="tabbtn" data-tab="input">入力</button>
+    <button class="tabbtn" data-tab="list">一覧・集計</button>
+    <button class="tabbtn" data-tab="analysis">分析</button>
+  </nav>
+
+  <!-- ============ 画面1：入力 ============ -->
+  <section class="screen" id="screen-input">
+
+    <div class="card">
+      <div class="eyebrow">📋&nbsp;<span>基本情報</span></div>
+      <div class="row3">
+        <div class="field" style="flex:1.4">
+          <label>営業日付</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="field" style="flex:.7">
+          <label>曜日</label>
+          <input type="text" id="f-weekday" readonly>
+        </div>
+      </div>
+      <div class="field">
+        <label>天候</label>
+        <div class="weatherRow" id="f-weather">
+          <button class="weatherBtn" data-w="晴" aria-pressed="false">晴</button>
+          <button class="weatherBtn" data-w="曇り" aria-pressed="false">曇り</button>
+          <button class="weatherBtn" data-w="雨" aria-pressed="false">雨</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>記入者</label>
+        <input type="text" id="f-recorder" placeholder="例：さかもと">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">🧾&nbsp;<span>精算レシートから転記</span></div>
+      <div class="row2">
+        <div class="field"><label>純売上（税抜）</label><input class="numin" data-field="netSales" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>消費税</label><input class="numin" data-field="tax" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="field"><label>総売上（税込）</label><input class="numin" data-field="grossSales" type="text" inputmode="numeric" placeholder="0"></div>
+      <div class="row2">
+        <div class="field"><label>客数（組）</label><input class="numin" data-field="guestGroups" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>客数（名）</label><input class="numin" data-field="guestCount" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="field"><label>客単価</label><input class="numin" data-field="guestUnitPrice" type="text" inputmode="numeric" placeholder="0"></div>
+      <div class="row2">
+        <div class="field"><label>現計</label><input class="numin" data-field="cashTotal" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>釣銭準備金</label><input class="numin" data-field="changeFund" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="field">
+        <label>現金在高</label>
+        <input class="numin" data-field="cashOnHand" type="text" inputmode="numeric" placeholder="レシートに記載があれば入力">
+        <span class="hint">任意項目。空欄なら検算②はスキップされます</span>
+      </div>
+      <div class="row2">
+        <div class="field"><label>クレジット</label><input class="numin" data-field="credit" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>オフラインクレジット</label><input class="numin" data-field="offlineCredit" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>電子マネー</label><input class="numin" data-field="emoney" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>ペイペイ</label><input class="numin" data-field="paypay" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>金券他</label><input class="numin" data-field="gift" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>マイナス</label><input class="numin" data-field="minus" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="field"><label>プラス</label><input class="numin" data-field="plus" type="text" inputmode="numeric" placeholder="0"></div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">✏️&nbsp;<span>手入力項目</span></div>
+      <div class="row2">
+        <div class="field"><label>材料・その他（出金）</label><input class="numin" data-field="materialsOther" type="text" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>食品以外の売上（B・税込）</label><input class="numin" data-field="nonFoodB" type="text" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="field">
+        <label>特記事項</label>
+        <textarea id="f-notes" placeholder="例：〇〇の入荷遅れあり"></textarea>
+      </div>
+      <div class="field">
+        <label>勤務状況（任意）</label>
+        <textarea id="f-workstatus" placeholder="例：〇〇さん遅番"></textarea>
+      </div>
+    </div>
+
+    <div class="sect-h">自動計算 <em>ここは入力しない</em></div>
+    <div class="card">
+      <div class="calcgrid">
+        <div class="calcitem"><div class="l">差引①</div><div class="v" id="c-diff1">0</div></div>
+        <div class="calcitem"><div class="l">支出合計</div><div class="v" id="c-expense">0</div></div>
+        <div class="calcitem"><div class="l">差引社内入金額</div><div class="v" id="c-internal">0</div></div>
+        <div class="calcitem"><div class="l">売上税抜A</div><div class="v" id="c-exA">0</div></div>
+        <div class="calcitem"><div class="l">消費税8%</div><div class="v" id="c-tax8">0</div></div>
+        <div class="calcitem"><div class="l">食品以外の税抜</div><div class="v" id="c-nonfoodex">0</div></div>
+        <div class="calcitem"><div class="l">本日の売上（税抜）</div><div class="v" id="c-todaysales">0</div></div>
+        <div class="calcitem"><div class="l">合計売上対象人員</div><div class="v" id="c-staffcount">0</div></div>
+      </div>
+    </div>
+
+    <div class="btnrow" style="margin-top:14px">
+      <button class="btn ghost small" id="newBtn">新規</button>
+      <button class="btn ghost small" id="printBtn">印刷</button>
+      <button class="btn ghost small" id="deleteBtn" style="display:none;color:#C6362F;border-color:#C6362F">削除</button>
+    </div>
+
+    <div class="localNote">※ 入力したデータはこの端末のブラウザにしか保存されません。他の端末とは共有されません。</div>
+  </section>
+
+  <!-- ============ 画面3：一覧・集計 ============ -->
+  <section class="screen" id="screen-list">
+    <div class="card">
+      <div class="eyebrow">📅&nbsp;<span>月を選択</span></div>
+      <div class="monthbar">
+        <input type="month" id="list-month">
+        <button class="btn ghost small" id="csvBtn" style="flex:0 0 auto;padding:10px 14px">CSV書き出し</button>
+      </div>
+      <div class="statgrid" id="monthStats"></div>
+    </div>
+
+    <div class="sect-h">日報一覧 <em>タップで編集</em></div>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>日付</th><th>曜</th><th>天候</th><th>総売上</th><th>客数</th><th>客単価</th><th>入金額</th><th>検算</th><th>操作</th></tr>
+        </thead>
+        <tbody id="listBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 画面4：分析 ============ -->
+  <section class="screen" id="screen-analysis">
+    <div class="sect-h">天候別 <em>平均</em></div>
+    <div class="card">
+      <div class="statgrid" id="weatherStats"></div>
+    </div>
+
+    <div class="sect-h">曜日別 <em>平均</em></div>
+    <div class="tblwrap">
+      <table class="tbl">
+        <thead><tr><th>曜日</th><th>件数</th><th>平均売上</th><th>平均客数</th></tr></thead>
+        <tbody id="weekdayStats"></tbody>
+      </table>
+    </div>
+
+    <div class="sect-h">比較 <em>基準日</em></div>
+    <div class="card">
+      <div class="field"><label>基準日</label><input type="date" id="cmp-date"></div>
+      <div class="cmpcard" id="cmp-week"></div>
+      <div class="cmpcard" id="cmp-year"></div>
+    </div>
+  </section>
+
+  <div class="sect-h">バックアップ</div>
+  <div class="card">
+    <div class="btnrow">
+      <button class="btn navy small" id="backupExportBtn">JSON書き出し</button>
+      <button class="btn ghost small" id="backupImportBtn">JSON読み込み</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+    <div class="note">端末を替えるときは、書き出したJSONファイルを新しい端末で読み込んでください。</div>
+  </div>
+
+  <div class="foot">
+    <span class="b">鳴門屋製パン ／ 桃谷本店</span><br>レジ締め日報ツール
+  </div>
+</div>
+
+<!-- 検算バー（入力画面のみ表示） -->
+<div class="checkbar" id="checkbar">
+  <div class="inner">
+    <div class="chiprow">
+      <div class="chip4" id="chip1"><span class="num">①</span>総売上</div>
+      <div class="chip4" id="chip2"><span class="num">②</span>現金在高</div>
+      <div class="chip4" id="chip3"><span class="num">③</span>売上ルート</div>
+      <div class="chip4" id="chip4"><span class="num">④</span>現金ルート</div>
+    </div>
+    <div class="msglist" id="msglist"></div>
+    <div class="btnrow">
+      <button class="btn" id="saveBtn">この日報を保存する</button>
+    </div>
+    <div class="savedFlash" id="savedFlash"></div>
+  </div>
+</div>
+
+<!-- 印刷用レイアウト -->
+<div id="printArea">
+  <div class="pTitle">営業日報</div>
+  <div class="pSub">鳴門屋製パン 桃谷本店</div>
+  <div class="pHead">
+    <span id="p-date">-</span>
+    <span id="p-weather">-</span>
+    <span id="p-recorder">-</span>
+  </div>
+
+  <div class="pSectTitle">精算レシート転記</div>
+  <table class="pTbl">
+    <tr><th>純売上（税抜）</th><td id="p-netSales"></td><th>消費税</th><td id="p-tax"></td></tr>
+    <tr><th>総売上（税込）</th><td id="p-grossSales"></td><th>マイナス</th><td id="p-minus"></td></tr>
+    <tr><th>客数（組）</th><td id="p-guestGroups"></td><th>客数（名）</th><td id="p-guestCount"></td></tr>
+    <tr><th>客単価</th><td id="p-guestUnitPrice"></td><th>プラス</th><td id="p-plus"></td></tr>
+    <tr><th>現計</th><td id="p-cashTotal"></td><th>釣銭準備金</th><td id="p-changeFund"></td></tr>
+    <tr><th>現金在高</th><td id="p-cashOnHand"></td><th>クレジット</th><td id="p-credit"></td></tr>
+    <tr><th>オフラインクレジット</th><td id="p-offlineCredit"></td><th>電子マネー</th><td id="p-emoney"></td></tr>
+    <tr><th>ペイペイ</th><td id="p-paypay"></td><th>金券他</th><td id="p-gift"></td></tr>
+  </table>
+
+  <div class="pSectTitle">自動計算</div>
+  <table class="pTbl">
+    <tr><th>差引①</th><td id="p-diff1"></td><th>支出合計</th><td id="p-expense"></td></tr>
+    <tr><th>差引社内入金額</th><td id="p-internal"></td><th>売上税抜A</th><td id="p-exA"></td></tr>
+    <tr><th>消費税8%</th><td id="p-tax8"></td><th>食品以外の税抜</th><td id="p-nonfoodex"></td></tr>
+    <tr><th>本日の売上（税抜）</th><td id="p-todaysales"></td><th>合計売上対象人員</th><td id="p-staffcount"></td></tr>
+  </table>
+
+  <div class="pSectTitle">手入力</div>
+  <table class="pTbl">
+    <tr><th>材料・その他（出金）</th><td id="p-materialsOther"></td><th>食品以外の売上（B）</th><td id="p-nonFoodB"></td></tr>
+  </table>
+  <div class="pSectTitle">特記事項</div>
+  <div class="pNoteBox" id="p-notes"></div>
+  <div class="pSectTitle">勤務状況</div>
+  <div class="pNoteBox" id="p-workstatus"></div>
+
+  <div class="pFoot" id="p-checkstatus"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const STORAGE_KEY = "nippou-records-v1";
+const WEEKDAY_JA = ["日","月","火","水","木","金","土"];
+
+let currentEditDate = null; // 現在編集中の元日付キー（新規はnull）
+let selectedWeather = "";
+
+/* ---------- ストレージ ---------- */
+function loadAll(){
+  try{ const o = JSON.parse(localStorage.getItem(STORAGE_KEY)); return (o && typeof o==="object") ? o : {}; }
+  catch(e){ return {}; }
+}
+function saveAll(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }
+
+/* ---------- ユーティリティ ---------- */
+function parseNum(v){
+  if(v===null || v===undefined) return 0;
+  const n = parseInt(String(v).replace(/,/g,"").trim(), 10);
+  return isNaN(n) ? 0 : n;
+}
+function fmt(n){
+  if(n===null || n===undefined || isNaN(n)) return "0";
+  return Math.round(n).toLocaleString("ja-JP");
+}
+function weekdayOf(dateStr){
+  if(!dateStr) return "";
+  const [y,m,d] = dateStr.split("-").map(Number);
+  return WEEKDAY_JA[new Date(y, m-1, d).getDay()];
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* ---------- 計算 ---------- */
+function calc(r){
+  const diff1 = r.grossSales + r.plus - r.minus;
+  const expenseTotal = r.materialsOther + r.credit + r.emoney + r.paypay + r.offlineCredit + r.gift;
+  const internalDeposit = diff1 - expenseTotal;
+  const salesExTaxA = Math.floor(diff1 / 1.08);
+  const tax8 = diff1 - salesExTaxA;
+  const nonFoodExTax = Math.floor(r.nonFoodB / 1.10);
+  const todaySalesExTax = salesExTaxA + nonFoodExTax;
+  const totalStaffCount = r.guestCount;
+  return {diff1, expenseTotal, internalDeposit, salesExTaxA, tax8, nonFoodExTax, todaySalesExTax, totalStaffCount};
+}
+
+function verify(r, c){
+  const check1 = (r.netSales + r.tax) === r.grossSales;
+  const check1diff = r.grossSales - (r.netSales + r.tax);
+
+  const hasCashOnHand = r.cashOnHand !== null;
+  const check2 = hasCashOnHand ? ((r.cashTotal + r.changeFund) === r.cashOnHand) : null;
+  const check2diff = hasCashOnHand ? (r.cashOnHand - (r.cashTotal + r.changeFund)) : 0;
+
+  const check3 = r.grossSales - r.minus - c.expenseTotal;
+  const check4 = r.cashTotal - r.materialsOther - r.minus;
+  const check34 = check3 === check4;
+  const check34diff = check4 - check3;
+
+  const messages = [];
+  if(!check1) messages.push({bad:true, text:"①不一致（差 "+fmt(Math.abs(check1diff))+" 円）：純売上・消費税・総売上のいずれかを確認してください"});
+  if(check2 === false) messages.push({bad:true, text:"②不一致（差 "+fmt(Math.abs(check2diff))+" 円）：現計・釣銭準備金のいずれかを確認してください"});
+  if(!check34 && check1 && check2 !== false) messages.push({bad:true, text:"③④不一致（差 "+fmt(Math.abs(check34diff))+" 円）：支出明細（クレジット・電子マネー・ペイペイ・オフライン・金券）のいずれかを確認してください"});
+
+  const pass = check1 && check2 !== false && check34;
+  if(pass) messages.push({bad:false, text:"検算OK：③と④が一致しています"});
+
+  return {check1, check2, check3, check4, check34, hasCashOnHand, messages, pass};
+}
+
+function readForm(){
+  const r = { date: $("f-date").value, weather: selectedWeather, recorder: $("f-recorder").value.trim(),
+    notes: $("f-notes").value, workStatus: $("f-workstatus").value };
+  document.querySelectorAll("#screen-input .numin").forEach(el=>{
+    const key = el.dataset.field;
+    if(key === "cashOnHand"){
+      r.cashOnHand = el.value.trim()==="" ? null : parseNum(el.value);
+    } else {
+      r[key] = parseNum(el.value);
+    }
+  });
+  return r;
+}
+
+function updateCheckbar(){
+  const r = readForm();
+  const c = calc(r);
+
+  $("c-diff1").textContent = fmt(c.diff1);
+  $("c-expense").textContent = fmt(c.expenseTotal);
+  $("c-internal").textContent = fmt(c.internalDeposit);
+  $("c-exA").textContent = fmt(c.salesExTaxA);
+  $("c-tax8").textContent = fmt(c.tax8);
+  $("c-nonfoodex").textContent = fmt(c.nonFoodExTax);
+  $("c-todaysales").textContent = fmt(c.todaySalesExTax);
+  $("c-staffcount").textContent = fmt(c.totalStaffCount);
+
+  const v = verify(r, c);
+  setChip($("chip1"), v.check1 ? "ok" : "ng");
+  setChip($("chip2"), v.hasCashOnHand ? (v.check2 ? "ok" : "ng") : "skip");
+  const c34 = v.check34 ? "ok" : "ng";
+  setChip($("chip3"), c34);
+  setChip($("chip4"), c34);
+
+  $("msglist").innerHTML = v.messages.map(m=>
+    '<div class="msg'+(m.bad?'':' good')+'">'+escapeHtml(m.text)+'</div>'
+  ).join("");
+
+  return {r, c, v};
+}
+function setChip(el, state){
+  el.classList.remove("ok","ng","skip");
+  el.classList.add(state);
+}
+
+/* ---------- 入力画面：初期化・イベント ---------- */
+function resetForm(dateStr){
+  currentEditDate = null;
+  $("f-date").value = dateStr || todayStr();
+  $("f-weekday").value = weekdayOf($("f-date").value);
+  selectedWeather = "";
+  document.querySelectorAll("#f-weather .weatherBtn").forEach(b=>b.setAttribute("aria-pressed","false"));
+  $("f-recorder").value = "";
+  $("f-notes").value = "";
+  $("f-workstatus").value = "";
+  document.querySelectorAll("#screen-input .numin").forEach(el=>{ el.value = ""; });
+  $("deleteBtn").style.display = "none";
+  $("savedFlash").textContent = "";
+  updateCheckbar();
+}
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function loadRecordToForm(rec){
+  currentEditDate = rec.date;
+  $("f-date").value = rec.date;
+  $("f-weekday").value = weekdayOf(rec.date);
+  selectedWeather = rec.weather || "";
+  document.querySelectorAll("#f-weather .weatherBtn").forEach(b=>{
+    b.setAttribute("aria-pressed", b.dataset.w === selectedWeather ? "true" : "false");
+  });
+  $("f-recorder").value = rec.recorder || "";
+  $("f-notes").value = rec.notes || "";
+  $("f-workstatus").value = rec.workStatus || "";
+  document.querySelectorAll("#screen-input .numin").forEach(el=>{
+    const key = el.dataset.field;
+    if(key === "cashOnHand"){
+      el.value = (rec.cashOnHand===null || rec.cashOnHand===undefined) ? "" : fmt(rec.cashOnHand);
+    } else {
+      el.value = fmt(rec[key] || 0);
+    }
+  });
+  $("deleteBtn").style.display = "";
+  $("savedFlash").textContent = "";
+  updateCheckbar();
+}
+
+function saveRecord(){
+  const date = $("f-date").value;
+  if(!date){ $("f-date").focus(); return; }
+  const {r} = updateCheckbar();
+
+  const all = loadAll();
+  if(all[date] && date !== currentEditDate){
+    if(!confirm(date + " の日報はすでに存在します。上書きしますか？")) return;
+  }
+  if(currentEditDate && currentEditDate !== date){
+    delete all[currentEditDate];
+  }
+  all[date] = r;
+  saveAll(all);
+  currentEditDate = date;
+  $("deleteBtn").style.display = "";
+  const now = new Date();
+  $("savedFlash").textContent = "保存しました（"+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")+"）";
+}
+
+function deleteCurrentRecord(){
+  if(!currentEditDate) return;
+  if(!confirm(currentEditDate + " の日報を削除します。よろしいですか？")) return;
+  const all = loadAll();
+  delete all[currentEditDate];
+  saveAll(all);
+  resetForm();
+}
+
+function printCurrentRecord(){
+  const {r, c, v} = updateCheckbar();
+  if(!r.date){ alert("営業日付を入力してください"); return; }
+  fillPrintArea(r, c, v);
+  window.print();
+}
+
+function fillPrintArea(r, c, v){
+  $("p-date").textContent = r.date + "（" + weekdayOf(r.date) + "）";
+  $("p-weather").textContent = "天候：" + (r.weather || "-");
+  $("p-recorder").textContent = "記入者：" + (r.recorder || "-");
+
+  const map = {
+    netSales:r.netSales, tax:r.tax, grossSales:r.grossSales, minus:r.minus,
+    guestGroups:r.guestGroups, guestCount:r.guestCount, guestUnitPrice:r.guestUnitPrice, plus:r.plus,
+    cashTotal:r.cashTotal, changeFund:r.changeFund, credit:r.credit,
+    offlineCredit:r.offlineCredit, emoney:r.emoney, paypay:r.paypay, gift:r.gift,
+    materialsOther:r.materialsOther, nonFoodB:r.nonFoodB
+  };
+  Object.keys(map).forEach(k=>{ $("p-"+k).textContent = fmt(map[k]); });
+  $("p-cashOnHand").textContent = r.cashOnHand===null ? "-" : fmt(r.cashOnHand);
+
+  $("p-diff1").textContent = fmt(c.diff1);
+  $("p-expense").textContent = fmt(c.expenseTotal);
+  $("p-internal").textContent = fmt(c.internalDeposit);
+  $("p-exA").textContent = fmt(c.salesExTaxA);
+  $("p-tax8").textContent = fmt(c.tax8);
+  $("p-nonfoodex").textContent = fmt(c.nonFoodExTax);
+  $("p-todaysales").textContent = fmt(c.todaySalesExTax);
+  $("p-staffcount").textContent = fmt(c.totalStaffCount);
+
+  $("p-notes").textContent = r.notes || "";
+  $("p-workstatus").textContent = r.workStatus || "";
+  $("p-checkstatus").textContent = "検算：" + (v.pass ? "OK" : "要確認");
+}
+
+/* ---------- 一覧・集計 ---------- */
+function renderList(){
+  const ym = $("list-month").value; // "YYYY-MM"
+  if(!ym) return;
+  const all = loadAll();
+  const rows = Object.values(all).filter(r=>r.date && r.date.startsWith(ym)).sort((a,b)=>a.date.localeCompare(b.date));
+
+  let sumGross=0, sumGuest=0, sumInternal=0, sumUnit=0, unitCount=0;
+  const bodyHtml = rows.map(r=>{
+    const c = calc(r);
+    const v = verify(r, c);
+    sumGross += r.grossSales; sumGuest += r.guestCount; sumInternal += c.internalDeposit;
+    if(r.guestUnitPrice){ sumUnit += r.guestUnitPrice; unitCount++; }
+    return '<tr class="'+(v.pass? '' : 'ng')+'" data-date="'+r.date+'">'+
+      '<td>'+r.date.slice(5)+'</td>'+
+      '<td>'+weekdayOf(r.date)+'</td>'+
+      '<td>'+(r.weather||"-")+'</td>'+
+      '<td>'+fmt(r.grossSales)+'</td>'+
+      '<td>'+fmt(r.guestCount)+'</td>'+
+      '<td>'+fmt(r.guestUnitPrice)+'</td>'+
+      '<td>'+fmt(c.internalDeposit)+'</td>'+
+      '<td>'+(v.pass?'OK':'NG')+'</td>'+
+      '<td class="actcell">'+
+        '<button class="miniBtn" data-act="print" data-date="'+r.date+'">印刷</button>'+
+        '<button class="miniBtn del" data-act="del" data-date="'+r.date+'">削除</button>'+
+      '</td>'+
+    '</tr>';
+  }).join("");
+
+  const days = rows.length;
+  $("listBody").innerHTML = rows.length ? (bodyHtml +
+    '<tr class="foot"><td colspan="3">合計／平均</td>'+
+    '<td>'+fmt(sumGross)+'</td>'+
+    '<td>'+fmt(sumGuest)+'</td>'+
+    '<td>'+(unitCount? fmt(Math.round(sumUnit/unitCount)) : "0")+'</td>'+
+    '<td>'+fmt(sumInternal)+'</td>'+
+    '<td colspan="2">-</td></tr>'
+  ) : '<tr><td colspan="9"><div class="empty">この月の日報はまだありません。</div></td></tr>';
+
+  $("monthStats").innerHTML =
+    '<div class="statcard"><div class="h">総売上合計</div><div class="n">'+fmt(sumGross)+'</div></div>'+
+    '<div class="statcard"><div class="h">客数合計</div><div class="n">'+fmt(sumGuest)+'</div></div>'+
+    '<div class="statcard"><div class="h">入金額合計</div><div class="n">'+fmt(sumInternal)+'</div></div>'+
+    '<div class="statcard"><div class="h">客単価 平均</div><div class="n">'+(unitCount?fmt(Math.round(sumUnit/unitCount)):"0")+'</div></div>'+
+    '<div class="statcard"><div class="h">1日あたり売上</div><div class="n">'+(days?fmt(Math.round(sumGross/days)):"0")+'</div></div>'+
+    '<div class="statcard"><div class="h">記録日数</div><div class="n">'+days+'</div></div>';
+
+  $("listBody").querySelectorAll("tr[data-date]").forEach(tr=>{
+    tr.addEventListener("click", (e)=>{
+      if(e.target.closest("button")) return;
+      const rec = loadAll()[tr.dataset.date];
+      if(rec){ switchTab("input"); loadRecordToForm(rec); }
+    });
+  });
+  $("listBody").querySelectorAll("[data-act=print]").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const rec = loadAll()[btn.dataset.date];
+      if(rec){ const c=calc(rec); const v=verify(rec,c); fillPrintArea(rec,c,v); window.print(); }
+    });
+  });
+  $("listBody").querySelectorAll("[data-act=del]").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      if(!confirm(btn.dataset.date + " の日報を削除します。よろしいですか？")) return;
+      const all2 = loadAll();
+      delete all2[btn.dataset.date];
+      saveAll(all2);
+      renderList();
+    });
+  });
+}
+
+/* ---------- CSV ---------- */
+function csvField(v){
+  const s = String(v===null||v===undefined?"":v);
+  if(/[",\n]/.test(s)) return '"'+s.replace(/"/g,'""')+'"';
+  return s;
+}
+function exportCsv(){
+  const ym = $("list-month").value;
+  if(!ym){ alert("月を選択してください"); return; }
+  const all = loadAll();
+  const rows = Object.values(all).filter(r=>r.date && r.date.startsWith(ym)).sort((a,b)=>a.date.localeCompare(b.date));
+  if(!rows.length){ alert("この月のデータがありません"); return; }
+
+  const header = ["日付","曜日","天候","記入者","純売上","消費税","総売上","客数(組)","客数(名)","客単価",
+    "現計","現金在高","クレジット","オフラインクレジット","電子マネー","ペイペイ","金券他","釣銭準備金","マイナス","プラス",
+    "材料その他","食品以外B","差引①","支出合計","差引社内入金額","売上税抜A","消費税8%","食品以外の税抜","本日の売上(税抜)",
+    "合計売上対象人員","検算","特記事項","勤務状況"];
+
+  const lines = [header.map(csvField).join(",")];
+  rows.forEach(r=>{
+    const c = calc(r);
+    const v = verify(r, c);
+    lines.push([
+      r.date, weekdayOf(r.date), r.weather, r.recorder,
+      r.netSales, r.tax, r.grossSales, r.guestGroups, r.guestCount, r.guestUnitPrice,
+      r.cashTotal, (r.cashOnHand===null?"":r.cashOnHand), r.credit, r.offlineCredit, r.emoney, r.paypay, r.gift, r.changeFund, r.minus, r.plus,
+      r.materialsOther, r.nonFoodB, c.diff1, c.expenseTotal, c.internalDeposit, c.salesExTaxA, c.tax8, c.nonFoodExTax,
+      c.todaySalesExTax, c.totalStaffCount, (v.pass?"OK":"NG"), r.notes, r.workStatus
+    ].map(csvField).join(","));
+  });
+
+  const csv = "﻿" + lines.join("\r\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "nippou_"+ym+".csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ---------- 分析 ---------- */
+function renderAnalysis(){
+  const all = Object.values(loadAll());
+
+  const weatherGroups = {"晴":[], "曇り":[], "雨":[]};
+  all.forEach(r=>{ if(weatherGroups[r.weather]) weatherGroups[r.weather].push(r); });
+  $("weatherStats").innerHTML = Object.keys(weatherGroups).map(w=>{
+    const g = weatherGroups[w];
+    const avgSales = g.length ? Math.round(g.reduce((s,r)=>s+r.grossSales,0)/g.length) : 0;
+    const avgGuest = g.length ? Math.round(g.reduce((s,r)=>s+r.guestCount,0)/g.length) : 0;
+    return '<div class="statcard"><div class="h">'+w+'（'+g.length+'日）</div>'+
+      '<div class="n">'+fmt(avgSales)+'</div><div class="n2">客数 '+fmt(avgGuest)+'</div></div>';
+  }).join("");
+
+  const weekdayGroups = [[],[],[],[],[],[],[]];
+  all.forEach(r=>{
+    const [y,m,d] = r.date.split("-").map(Number);
+    weekdayGroups[new Date(y,m-1,d).getDay()].push(r);
+  });
+  $("weekdayStats").innerHTML = weekdayGroups.map((g,i)=>{
+    const avgSales = g.length ? Math.round(g.reduce((s,r)=>s+r.grossSales,0)/g.length) : 0;
+    const avgGuest = g.length ? Math.round(g.reduce((s,r)=>s+r.guestCount,0)/g.length) : 0;
+    return '<tr><td>'+WEEKDAY_JA[i]+'</td><td>'+g.length+'</td><td>'+fmt(avgSales)+'</td><td>'+fmt(avgGuest)+'</td></tr>';
+  }).join("");
+
+  renderComparison();
+}
+
+function addDays(dateStr, delta){
+  const [y,m,d] = dateStr.split("-").map(Number);
+  const dt = new Date(y, m-1, d);
+  dt.setDate(dt.getDate()+delta);
+  return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
+}
+function addYears(dateStr, delta){
+  const [y,m,d] = dateStr.split("-").map(Number);
+  return (y+delta)+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+}
+
+function renderComparison(){
+  const base = $("cmp-date").value;
+  const all = loadAll();
+  const baseRec = all[base];
+
+  function buildCard(title, cmpDate){
+    const cmpRec = all[cmpDate];
+    if(!baseRec){
+      return '<div class="t">'+title+'</div><div class="r"><span>基準日のデータがありません</span></div>';
+    }
+    if(!cmpRec){
+      return '<div class="t">'+title+'（'+cmpDate+'）</div><div class="r"><span>データなし</span></div>';
+    }
+    const diff = baseRec.grossSales - cmpRec.grossSales;
+    const pct = cmpRec.grossSales ? Math.round(diff / cmpRec.grossSales * 1000)/10 : 0;
+    const cls = diff>=0 ? "diffup" : "diffdown";
+    const sign = diff>=0 ? "+" : "";
+    return '<div class="t">'+title+'（'+cmpDate+'）</div>'+
+      '<div class="r"><span>総売上</span><span>'+fmt(cmpRec.grossSales)+' 円 → '+fmt(baseRec.grossSales)+' 円 <span class="'+cls+'">('+sign+fmt(diff)+' / '+sign+pct+'%)</span></span></div>'+
+      '<div class="r"><span>客数</span><span>'+fmt(cmpRec.guestCount)+' 名 → '+fmt(baseRec.guestCount)+' 名</span></div>';
+  }
+
+  $("cmp-week").innerHTML = base ? buildCard("前週同曜日", addDays(base,-7)) : '<div class="t">前週同曜日</div><div class="r"><span>基準日を選択してください</span></div>';
+  $("cmp-year").innerHTML = base ? buildCard("前年同日", addYears(base,-1)) : '<div class="t">前年同日</div><div class="r"><span>基準日を選択してください</span></div>';
+}
+
+/* ---------- バックアップ ---------- */
+function exportBackup(){
+  const data = { version:1, exportedAt: new Date().toISOString(), records: loadAll() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "nippou-backup-"+todayStr()+".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importBackup(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try{ data = JSON.parse(reader.result); }
+    catch(e){ alert("JSONファイルの読み込みに失敗しました"); return; }
+    if(!data || typeof data.records !== "object"){ alert("バックアップファイルの形式が正しくありません"); return; }
+    if(!confirm("現在この端末に保存されているすべての日報データを、読み込んだ内容で置き換えます。よろしいですか？")) return;
+    saveAll(data.records);
+    resetForm();
+    renderList();
+    renderAnalysis();
+    alert("読み込みが完了しました");
+  };
+  reader.readAsText(file);
+}
+
+/* ---------- タブ切替 ---------- */
+function switchTab(name){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
+  $("screen-"+name).classList.add("active");
+  document.querySelector('.tabbtn[data-tab="'+name+'"]').classList.add("on");
+  $("checkbar").style.display = (name==="input") ? "" : "none";
+  if(name==="list") renderList();
+  if(name==="analysis") renderAnalysis();
+}
+
+/* ---------- イベント登録 ---------- */
+document.querySelectorAll(".tabbtn").forEach(b=>{
+  b.addEventListener("click", ()=>switchTab(b.dataset.tab));
+});
+
+$("f-date").addEventListener("change", ()=>{
+  $("f-weekday").value = weekdayOf($("f-date").value);
+  updateCheckbar();
+});
+
+document.querySelectorAll("#f-weather .weatherBtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    selectedWeather = btn.dataset.w;
+    document.querySelectorAll("#f-weather .weatherBtn").forEach(b=>b.setAttribute("aria-pressed", b===btn ? "true":"false"));
+  });
+});
+
+document.querySelectorAll("#screen-input .numin").forEach(el=>{
+  el.addEventListener("input", updateCheckbar);
+  el.addEventListener("focus", ()=>{ el.value = el.value.replace(/,/g,""); el.select(); });
+  el.addEventListener("blur", ()=>{
+    if(el.value.trim()==="") return;
+    el.value = fmt(parseNum(el.value));
+  });
+});
+
+$("newBtn").addEventListener("click", ()=>resetForm());
+$("printBtn").addEventListener("click", printCurrentRecord);
+$("deleteBtn").addEventListener("click", deleteCurrentRecord);
+$("saveBtn").addEventListener("click", saveRecord);
+
+$("list-month").addEventListener("change", renderList);
+$("csvBtn").addEventListener("click", exportCsv);
+
+$("cmp-date").addEventListener("change", renderComparison);
+
+$("backupExportBtn").addEventListener("click", exportBackup);
+$("backupImportBtn").addEventListener("click", ()=>$("importFile").click());
+$("importFile").addEventListener("change", (e)=>{
+  if(e.target.files[0]) importBackup(e.target.files[0]);
+  e.target.value = "";
+});
+
+/* ---------- 初期化 ---------- */
+(function init(){
+  const now = new Date();
+  $("list-month").value = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+  $("cmp-date").value = todayStr();
+  resetForm();
+  switchTab("input");
+})();
+</script>
+</body>
+</html>
