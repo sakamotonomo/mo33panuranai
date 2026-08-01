@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF3E2">
+<title>SNS運用チーム | Mo.33 投稿管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E2; --kinari:#FFFAEE; --paper:#FFF4DA;
+    --gold:#E8B93E; --gold-deep:#C99A25;
+    --navy:#1E2A63; --aka:#C6362F; --cha:#4A2F1F;
+    --green:#5B8C3E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Zen Maru Gothic',-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+    background-color:var(--cream);
+    background-image:radial-gradient(rgba(201,154,37,.14) 1.5px,transparent 1.6px);
+    background-size:22px 22px;
+    color:var(--cha);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 80px}
+
+  .hero{text-align:center;padding:36px 0 20px}
+  .brand{font-size:12px;letter-spacing:.35em;color:var(--aka);font-weight:700;padding-left:.35em}
+  .mark{font-family:'Dela Gothic One',sans-serif;font-size:34px;line-height:1.3;color:var(--navy);margin:6px 0 4px;letter-spacing:.03em}
+  .mark .aka{color:var(--aka)}
+  .sub{font-size:13px;color:var(--cha);letter-spacing:.06em}
+  .rule{width:64px;height:3px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+  .card{background:var(--kinari);border:3px solid var(--aka);border-radius:18px;
+    box-shadow:0 4px 0 rgba(198,54,47,.25);padding:20px;margin-top:16px}
+  .eyebrow{font-family:'Dela Gothic One',sans-serif;font-size:12px;letter-spacing:.2em;color:var(--aka);
+    display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .eyebrow span{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;color:var(--navy)}
+
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--cha);margin-bottom:6px}
+  .row2{display:flex;gap:8px}
+  .row2 .field{flex:1}
+  input,select,textarea{
+    width:100%;font-family:inherit;font-size:15px;font-weight:700;color:var(--navy);
+    background:#fff;border:2px solid var(--gold-deep);border-radius:12px;padding:10px 12px;
+    appearance:none;-webkit-appearance:none;
+  }
+  textarea{font-weight:500;resize:vertical;min-height:56px;line-height:1.6}
+  input::placeholder,textarea::placeholder{color:#C9B896;font-weight:500}
+  input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+
+  .addBtn{
+    width:100%;margin-top:4px;
+    font-family:'Dela Gothic One',sans-serif;font-size:15px;letter-spacing:.08em;color:#fff;
+    background:var(--aka);border:none;border-radius:14px;padding:13px;cursor:pointer;
+    box-shadow:0 4px 0 var(--gold-deep);
+  }
+  .addBtn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--gold-deep)}
+
+  .sect-h{display:flex;align-items:center;gap:10px;font-family:'Dela Gothic One',sans-serif;
+    font-size:17px;color:var(--navy);letter-spacing:.05em;margin:32px 4px 14px}
+  .sect-h::after{content:"";flex:1;height:2px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 14px)}
+  .sect-h em{font-style:normal;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:12px;color:var(--aka);letter-spacing:.18em}
+
+  .stats{display:flex;gap:8px;flex-wrap:wrap}
+  .stat{flex:1;min-width:88px;background:var(--kinari);border:2px solid var(--gold-deep);border-radius:13px;
+    padding:10px 6px;text-align:center}
+  .stat .n{font-family:'Dela Gothic One',sans-serif;font-size:22px;color:var(--navy)}
+  .stat .l{font-size:11px;font-weight:700;color:var(--cha);margin-top:2px}
+
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .chipBtn{
+    font-size:12px;font-weight:700;color:var(--navy);background:#fff;
+    border:2px solid var(--gold-deep);border-radius:20px;padding:5px 12px;cursor:pointer;
+  }
+  .chipBtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .post{
+    background:var(--kinari);border:2px solid var(--gold-deep);border-radius:15px;
+    padding:13px 14px;margin-bottom:10px;
+  }
+  .post.done{opacity:.6}
+  .postTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .postDate{font-family:'Dela Gothic One',sans-serif;font-size:14px;color:var(--navy)}
+  .postPlat{font-size:11px;font-weight:700;color:var(--aka);margin-top:2px}
+  .postAssignee{font-size:11.5px;color:var(--cha);margin-top:2px}
+  .postMemo{font-size:13px;color:var(--cha);margin-top:8px;line-height:1.7;white-space:pre-wrap}
+  .postActions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .statusBtn{
+    font-size:11.5px;font-weight:700;border-radius:20px;padding:5px 12px;border:2px solid var(--gold-deep);
+    background:#fff;color:var(--navy);cursor:pointer;
+  }
+  .statusBtn.mitei{border-color:#C9B896;color:#8a6f4f}
+  .statusBtn.yotei{border-color:var(--gold-deep);color:var(--gold-deep)}
+  .statusBtn.toukou{border-color:var(--green);color:var(--green);background:#EFF6E9}
+  .delBtn{
+    font-size:11.5px;font-weight:700;border-radius:20px;padding:5px 12px;border:2px solid var(--aka);
+    background:#fff;color:var(--aka);cursor:pointer;margin-left:auto;
+  }
+
+  .empty{
+    font-size:13px;color:#8a6f4f;line-height:1.8;
+    background:var(--paper);border:2px dashed var(--gold-deep);border-radius:13px;
+    padding:16px;text-align:center;
+  }
+  .note{font-size:11.5px;color:#8a6f4f;margin-top:10px;line-height:1.7}
+
+  .foot{text-align:center;margin-top:40px;font-size:11.5px;color:var(--cha);letter-spacing:.06em;line-height:1.9}
+  .foot .b{font-family:'Dela Gothic One',sans-serif;color:var(--navy);letter-spacing:.15em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="brand">Mo.33</div>
+    <div class="mark">SNS<span class="aka">運用</span>チーム</div>
+    <div class="sub">ぱんうらないの投稿を、みんなで管理するで</div>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <div class="eyebrow">＋ &nbsp;<span>投稿を追加</span></div>
+    <div class="row2">
+      <div class="field"><label>投稿予定日</label><input id="f-date" type="date"></div>
+      <div class="field"><label>SNS</label>
+        <select id="f-platform">
+          <option value="X">X（旧Twitter）</option>
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>担当者</label><input id="f-assignee" placeholder="例：さかもと"></div>
+      <div class="field"><label>ステータス</label>
+        <select id="f-status">
+          <option value="mitei">未定</option>
+          <option value="yotei" selected>予約済み</option>
+          <option value="toukou">投稿済み</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>内容メモ</label>
+      <textarea id="f-memo" placeholder="例：新作パン数秘のリール投稿"></textarea>
+    </div>
+    <button class="addBtn" id="addBtn">投稿を追加する</button>
+    <div class="note">※ データはこの端末のブラウザ内だけに保存されるで（他の人とは共有されへんから、チームで見るときはスクショか合言葉で共有してな）。</div>
+  </section>
+
+  <div class="sect-h">状況 <em>いま</em></div>
+  <div class="stats" id="stats"></div>
+
+  <div class="sect-h">投稿一覧 <em>リスト</em></div>
+  <div class="filters" id="filters"></div>
+  <div id="postList"></div>
+
+  <div class="foot">
+    <span class="b">Pan uranai ／ Mo.33</span>　@sakamoto_no_mo
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const STORAGE_KEY = "sns-team-posts";
+const STATUS_LABEL = {mitei:"未定", yotei:"予約済み", toukou:"投稿済み"};
+let filter = "all";
+
+function loadPosts(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e){ return []; }
+}
+function savePosts(posts){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+function addPost(){
+  const date = $("f-date").value;
+  const platform = $("f-platform").value;
+  const assignee = $("f-assignee").value.trim();
+  const status = $("f-status").value;
+  const memo = $("f-memo").value.trim();
+  if(!date){ $("f-date").focus(); return; }
+
+  const posts = loadPosts();
+  posts.push({ id: Date.now(), date, platform, assignee, status, memo });
+  savePosts(posts);
+
+  $("f-assignee").value = "";
+  $("f-memo").value = "";
+  $("f-status").value = "yotei";
+  render();
+}
+
+function cycleStatus(id){
+  const order = ["mitei","yotei","toukou"];
+  const posts = loadPosts();
+  const p = posts.find(x=>x.id===id);
+  if(!p) return;
+  p.status = order[(order.indexOf(p.status)+1) % order.length];
+  savePosts(posts);
+  render();
+}
+
+function deletePost(id){
+  savePosts(loadPosts().filter(x=>x.id!==id));
+  render();
+}
+
+function render(){
+  const posts = loadPosts().sort((a,b)=> a.date.localeCompare(b.date));
+
+  const counts = {mitei:0, yotei:0, toukou:0};
+  posts.forEach(p=>counts[p.status]++);
+  $("stats").innerHTML =
+    '<div class="stat"><div class="n">'+posts.length+'</div><div class="l">全投稿</div></div>'+
+    '<div class="stat"><div class="n">'+counts.mitei+'</div><div class="l">未定</div></div>'+
+    '<div class="stat"><div class="n">'+counts.yotei+'</div><div class="l">予約済み</div></div>'+
+    '<div class="stat"><div class="n">'+counts.toukou+'</div><div class="l">投稿済み</div></div>';
+
+  $("filters").innerHTML = ["all","mitei","yotei","toukou"].map(f=>
+    '<button class="chipBtn'+(filter===f?' on':'')+'" data-f="'+f+'">'+(f==="all"?"すべて":STATUS_LABEL[f])+'</button>'
+  ).join('');
+  $("filters").querySelectorAll(".chipBtn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ filter = btn.dataset.f; render(); });
+  });
+
+  const shown = filter==="all" ? posts : posts.filter(p=>p.status===filter);
+
+  if(!shown.length){
+    $("postList").innerHTML = '<div class="empty">まだ投稿がないで。上のフォームから追加してな。</div>';
+    return;
+  }
+
+  $("postList").innerHTML = shown.map(p=>
+    '<div class="post'+(p.status==="toukou"?' done':'')+'">'+
+      '<div class="postTop">'+
+        '<div><div class="postDate">'+p.date+'</div>'+
+        '<div class="postPlat">'+p.platform+'</div>'+
+        (p.assignee?'<div class="postAssignee">担当：'+p.assignee+'</div>':'')+
+        '</div>'+
+      '</div>'+
+      (p.memo?'<div class="postMemo">'+escapeHtml(p.memo)+'</div>':'')+
+      '<div class="postActions">'+
+        '<button class="statusBtn '+p.status+'" data-id="'+p.id+'" data-act="cycle">'+STATUS_LABEL[p.status]+'</button>'+
+        '<button class="delBtn" data-id="'+p.id+'" data-act="del">削除</button>'+
+      '</div>'+
+    '</div>'
+  ).join('');
+
+  $("postList").querySelectorAll("[data-act=cycle]").forEach(btn=>{
+    btn.addEventListener("click", ()=>cycleStatus(+btn.dataset.id));
+  });
+  $("postList").querySelectorAll("[data-act=del]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(confirm("この投稿を削除するで、ええな？")) deletePost(+btn.dataset.id);
+    });
+  });
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+$("addBtn").addEventListener("click", addPost);
+render();
+</script>
+</body>
+</html>
