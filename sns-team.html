@@ -173,7 +173,12 @@ const STATUS_LABEL = {mitei:"未定", yotei:"予約済み", toukou:"投稿済み
 let filter = "all";
 
 function loadPosts(){
-  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  try{
+    const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    // 古いデータでステータスが欠けてても集計が壊れんように既定値へ寄せる
+    posts.forEach(p=>{ if(!STATUS_LABEL[p.status]) p.status = "mitei"; });
+    return posts;
+  }
   catch(e){ return []; }
 }
 function savePosts(posts){
@@ -241,9 +246,9 @@ function render(){
   $("postList").innerHTML = shown.map(p=>
     '<div class="post'+(p.status==="toukou"?' done':'')+'">'+
       '<div class="postTop">'+
-        '<div><div class="postDate">'+p.date+'</div>'+
-        '<div class="postPlat">'+p.platform+'</div>'+
-        (p.assignee?'<div class="postAssignee">担当：'+p.assignee+'</div>':'')+
+        '<div><div class="postDate">'+escapeHtml(p.date)+'</div>'+
+        '<div class="postPlat">'+escapeHtml(p.platform)+'</div>'+
+        (p.assignee?'<div class="postAssignee">担当：'+escapeHtml(p.assignee)+'</div>':'')+
         '</div>'+
       '</div>'+
       (p.memo?'<div class="postMemo">'+escapeHtml(p.memo)+'</div>':'')+
@@ -265,7 +270,8 @@ function render(){
 }
 
 function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  return String(s == null ? "" : s)
+    .replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
 $("addBtn").addEventListener("click", addPost);
